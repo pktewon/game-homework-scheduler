@@ -25,3 +25,9 @@ keystore.properties
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Python collector and local debug files
+__pycache__/
+*.py[cod]
+.collector-cache/
+.collector-test-*/

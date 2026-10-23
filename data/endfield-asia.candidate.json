@@ -1,0 +1,615 @@
+{
+  "schemaVersion": 1,
+  "catalogRevision": 2,
+  "generatedAt": "2026-10-23T09:13:48Z",
+  "collectorVersion": "0.1.0",
+  "catalogFingerprint": "51a7cecb07a128c2c3608603b9af3b8a2aa5d5bc3a647f1c3de6f81df8262533",
+  "exampleOnly": false,
+  "publicationState": "CANDIDATE",
+  "autoImportAllowed": false,
+  "profile": {
+    "profileKey": "endfield-gryphline-asia",
+    "gameKey": "endfield",
+    "publisherKey": "GRYPHLINE",
+    "serverRegion": "ASIA",
+    "locale": "ko-KR",
+    "serverUtcOffset": "+08:00"
+  },
+  "source": {
+    "url": "https://endfield.gryphline.com/ko-kr/news/9560",
+    "title": "「단청도」 버전 업데이트 설명",
+    "checkedAt": "2026-10-23T09:13:48Z",
+    "contentHash": "5ea443751669a9eb75c0f2f417b5901bfbe35c9a95f57206902c9deaf82ae9ac"
+  },
+  "coverage": {
+    "includedSection": "신규 이벤트",
+    "eventGroups": 11,
+    "notParsed": [
+      "이벤트 및 콘텐츠 업데이트",
+      "헤드헌팅 및 신청",
+      "메일 및 상시 콘텐츠"
+    ]
+  },
+  "summary": {
+    "groups": 11,
+    "phases": 15,
+    "confirmedPeriods": 7,
+    "reviewPeriods": 8,
+    "dailyTasks": 4
+  },
+  "warnings": [
+    "신규 이벤트 구간만 지원하는 초기 수집기입니다. 다른 콘텐츠 구간은 별도 확인해야 합니다.",
+    "업데이트 후·점검 전의 시각은 추정하지 않습니다. 앱 배포 전 검수가 필요합니다.",
+    "숙제는 확인용 제안 템플릿입니다. 게임 내 개별 임무나 개인 진행 상태가 아닙니다.",
+    "일일 초기화 시각은 이 공지만으로 확정하지 않으며 게임 프로필에서 별도 확인해야 합니다."
+  ],
+  "groups": [
+    {
+      "groupKey": "endfield-9560-event-0001",
+      "title": "「불꽃으로 맺은 인연」 흥미 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0001:play",
+          "revision": 1,
+          "phaseKind": "PLAY",
+          "title": "「불꽃으로 맺은 인연」 흥미 이벤트",
+          "startAt": null,
+          "endAt": null,
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "START_NOT_EXPLICIT",
+            "END_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「불꽃으로 맺은 인연」 흥미 이벤트",
+            "paragraph": 81,
+            "periodText": "「단청도」 버전 업데이트 후 ~ 버전 업데이트 점검 전",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        },
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0001:stage",
+          "revision": 1,
+          "phaseKind": "STAGE",
+          "title": "「불꽃으로 맺은 인연」 흥미 이벤트 · 추가 개방",
+          "startAt": "2026-10-21T20:00:00Z",
+          "endAt": null,
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "END_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「불꽃으로 맺은 인연」 흥미 이벤트",
+            "paragraph": 82,
+            "periodText": "· 이벤트 콘텐츠 업데이트 시간: 2026/10/22 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0002",
+      "title": "「만물의 영혼」 출석 체크 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0002:play",
+          "revision": 1,
+          "phaseKind": "ATTENDANCE",
+          "title": "「만물의 영혼」 출석 체크 이벤트",
+          "startAt": null,
+          "endAt": "2026-11-05T03:59:00Z",
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "START_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「만물의 영혼」 출석 체크 이벤트",
+            "paragraph": 87,
+            "periodText": "「단청도」 버전 업데이트 후 ~ 2026/11/05 11:59(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": [
+            {
+              "sourceTaskKey": "daily-attendance",
+              "title": "오늘 출석과 보상 수령 확인",
+              "recurrence": "DAILY",
+              "resetPolicy": "GAME_RESET",
+              "templateOrigin": "SUGGESTED_FROM_NOTICE",
+              "evidenceKind": "ATTENDANCE",
+              "cumulativeTargetDays": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0003",
+      "title": "「먹에서 피어난 색채」 기념 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0003:play",
+          "revision": 1,
+          "phaseKind": "PLAY",
+          "title": "「먹에서 피어난 색채」 기념 이벤트",
+          "startAt": null,
+          "endAt": "2026-11-05T04:00:00Z",
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "START_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「먹에서 피어난 색채」 기념 이벤트",
+            "paragraph": 91,
+            "periodText": "「단청도」 버전 업데이트 후 ~ 2026/11/05 12:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0004",
+      "title": "「칼리의 꽃과 풀 동화」 촬영 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0004:play",
+          "revision": 1,
+          "phaseKind": "PLAY",
+          "title": "「칼리의 꽃과 풀 동화」 촬영 이벤트",
+          "startAt": "2026-10-22T04:00:00Z",
+          "endAt": "2026-11-04T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "reviewReasons": [],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「칼리의 꽃과 풀 동화」 촬영 이벤트",
+            "paragraph": 95,
+            "periodText": "2026/10/22 12:00 ~ 2026/11/05 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0005",
+      "title": "「위기 대응 준비」 기간 한정 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0005:play",
+          "revision": 1,
+          "phaseKind": "PLAY",
+          "title": "「위기 대응 준비」 기간 한정 이벤트",
+          "startAt": "2026-10-28T20:00:00Z",
+          "endAt": "2026-11-04T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "reviewReasons": [],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「위기 대응 준비」 기간 한정 이벤트",
+            "paragraph": 99,
+            "periodText": "2026/10/29 04:00 ~ 2026/11/05 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": [
+            {
+              "sourceTaskKey": "daily-mission",
+              "title": "오늘 이벤트 목표와 보상 확인",
+              "recurrence": "DAILY",
+              "resetPolicy": "GAME_RESET",
+              "templateOrigin": "SUGGESTED_FROM_NOTICE",
+              "evidenceKind": "DAILY_MISSION"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0006",
+      "title": "「다채로운 연무」 도전 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0006:play",
+          "revision": 1,
+          "phaseKind": "CHALLENGE",
+          "title": "「다채로운 연무」 도전 이벤트",
+          "startAt": "2026-10-29T04:00:00Z",
+          "endAt": "2026-11-18T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "reviewReasons": [],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「다채로운 연무」 도전 이벤트",
+            "paragraph": 103,
+            "periodText": "2026/10/29 12:00 ~ 2026/11/19 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        },
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0006:stage",
+          "revision": 1,
+          "phaseKind": "STAGE",
+          "title": "「다채로운 연무」 도전 이벤트 · 추가 개방",
+          "startAt": "2026-11-10T20:00:00Z",
+          "endAt": "2026-11-18T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "reviewReasons": [],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「다채로운 연무」 도전 이벤트",
+            "paragraph": 104,
+            "periodText": "· 이벤트 콘텐츠 업데이트 시간: 2026/11/11 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0007",
+      "title": "「모든 영혼에 바치는 새로운 빛과 그림자」 흥미 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0007:play",
+          "revision": 1,
+          "phaseKind": "WEB",
+          "title": "「모든 영혼에 바치는 새로운 빛과 그림자」 흥미 이벤트",
+          "startAt": "2026-10-31T04:00:00Z",
+          "endAt": "2026-11-13T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "reviewReasons": [],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「모든 영혼에 바치는 새로운 빛과 그림자」 흥미 이벤트",
+            "paragraph": 108,
+            "periodText": "2026/10/31 12:00 ~ 2026/11/14 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0008",
+      "title": "명하 스토리 이벤트 「야생으로」",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0008:play",
+          "revision": 1,
+          "phaseKind": "PLAY",
+          "title": "명하 스토리 이벤트 「야생으로」",
+          "startAt": "2026-11-05T04:00:00Z",
+          "endAt": null,
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "END_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "명하 스토리 이벤트 「야생으로」",
+            "paragraph": 112,
+            "periodText": "2026/11/05 12:00(서버 시간) ~ 버전 업데이트 점검 전",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0009",
+      "title": "「은하수와 함께」 출석 체크 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0009:play",
+          "revision": 1,
+          "phaseKind": "ATTENDANCE",
+          "title": "「은하수와 함께」 출석 체크 이벤트",
+          "startAt": "2026-11-05T04:00:00Z",
+          "endAt": null,
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "END_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「은하수와 함께」 출석 체크 이벤트",
+            "paragraph": 117,
+            "periodText": "2026/11/05 12:00(서버 시간) ~ 버전 업데이트 점검 전",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": [
+            {
+              "sourceTaskKey": "daily-attendance",
+              "title": "오늘 출석과 보상 수령 확인",
+              "recurrence": "DAILY",
+              "resetPolicy": "GAME_RESET",
+              "templateOrigin": "SUGGESTED_FROM_NOTICE",
+              "evidenceKind": "ATTENDANCE",
+              "cumulativeTargetDays": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0010",
+      "title": "「위기 협약 · 잿빛 실험 작전」 도전 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0010:play",
+          "revision": 1,
+          "phaseKind": "CHALLENGE",
+          "title": "「위기 협약 · 잿빛 실험 작전」 도전 이벤트",
+          "startAt": "2026-11-05T04:00:00Z",
+          "endAt": null,
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "END_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「위기 협약 · 잿빛 실험 작전」 도전 이벤트",
+            "paragraph": 121,
+            "periodText": "2026/11/05 12:00(서버 시간) ~ 버전 업데이트 점검 전",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        },
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0010:stage",
+          "revision": 1,
+          "phaseKind": "STAGE",
+          "title": "「위기 협약 · 잿빛 실험 작전」 도전 이벤트 · 추가 개방",
+          "startAt": "2026-11-12T04:00:00Z",
+          "endAt": null,
+          "timeState": "NEEDS_REVIEW",
+          "reviewReasons": [
+            "END_NOT_EXPLICIT"
+          ],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「위기 협약 · 잿빛 실험 작전」 도전 이벤트",
+            "paragraph": 122,
+            "periodText": "· 이벤트 콘텐츠 업데이트 시간: 2026/11/12 12:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        },
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0010:shop",
+          "revision": 1,
+          "phaseKind": "SHOP",
+          "title": "「위기 협약 · 잿빛 실험 작전」 도전 이벤트 · 교환 마감",
+          "startAt": "2026-11-05T04:00:00Z",
+          "endAt": "2026-12-02T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "reviewReasons": [],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「위기 협약 · 잿빛 실험 작전」 도전 이벤트",
+            "paragraph": 123,
+            "periodText": "2026/11/05 12:00 ~ 2026/12/03 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "wanted-exchanges",
+              "title": "원하는 교환 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": []
+        }
+      ]
+    },
+    {
+      "groupKey": "endfield-9560-event-0011",
+      "title": "「이성 보급」 기간 한정 이벤트",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:endfield-9560-event-0011:play",
+          "revision": 1,
+          "phaseKind": "PLAY",
+          "title": "「이성 보급」 기간 한정 이벤트",
+          "startAt": "2026-11-18T20:00:00Z",
+          "endAt": "2026-11-25T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "reviewReasons": [],
+          "sourceUrl": "https://endfield.gryphline.com/ko-kr/news/9560",
+          "sourceCheckedAt": "2026-10-23T09:13:48Z",
+          "sourceEvidence": {
+            "section": "신규 이벤트",
+            "heading": "「이성 보급」 기간 한정 이벤트",
+            "paragraph": 129,
+            "periodText": "2026/11/19 04:00 ~ 2026/11/26 04:00(서버 시간)",
+            "timeZoneBasis": "Asia / UTC+08:00"
+          },
+          "checkTemplates": [
+            {
+              "sourceItemKey": "goal",
+              "title": "선택한 이벤트 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "rewards",
+              "title": "이벤트 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": [
+            {
+              "sourceTaskKey": "daily-mission",
+              "title": "오늘 이벤트 목표와 보상 확인",
+              "recurrence": "DAILY",
+              "resetPolicy": "GAME_RESET",
+              "templateOrigin": "SUGGESTED_FROM_NOTICE",
+              "evidenceKind": "DAILY_MISSION"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

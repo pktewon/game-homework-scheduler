@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "notices": {
+    "https://endfield.gryphline.com/ko-kr/news/9560": [
+      {
+        "groupKey": "endfield-9560-event-0001",
+        "aliases": [
+          "「불꽃으로 맺은 인연」 흥미 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0002",
+        "aliases": [
+          "「만물의 영혼」 출석 체크 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0003",
+        "aliases": [
+          "「먹에서 피어난 색채」 기념 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0004",
+        "aliases": [
+          "「칼리의 꽃과 풀 동화」 촬영 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0005",
+        "aliases": [
+          "「위기 대응 준비」 기간 한정 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0006",
+        "aliases": [
+          "「다채로운 연무」 도전 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0007",
+        "aliases": [
+          "「모든 영혼에 바치는 새로운 빛과 그림자」 흥미 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0008",
+        "aliases": [
+          "명하 스토리 이벤트 「야생으로」"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0009",
+        "aliases": [
+          "「은하수와 함께」 출석 체크 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0010",
+        "aliases": [
+          "「위기 협약 · 잿빛 실험 작전」 도전 이벤트"
+        ]
+      },
+      {
+        "groupKey": "endfield-9560-event-0011",
+        "aliases": [
+          "「이성 보급」 기간 한정 이벤트"
+        ]
+      }
+    ]
+  }
+}

@@ -43,6 +43,9 @@ class GameEventsFragment : Fragment(R.layout.fragment_game_events) {
         }, onSource = { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it))) }, onEdit = { edit(it.groupKey) }, onMemos = { event ->
             parentFragmentManager.beginTransaction().replace(R.id.container, MemoBoardFragment.create(profile, event.sourceKey))
                 .addToBackStack("event-memos").commit()
+        }, onDetail = { event ->
+            parentFragmentManager.beginTransaction().replace(R.id.container, EventDetailFragment.create(event.sourceKey))
+                .addToBackStack("event-detail").commit()
         })
         b.events.layoutManager = LinearLayoutManager(requireContext()); b.events.adapter = adapter
         b.back.setOnClickListener { parentFragmentManager.popBackStack() }

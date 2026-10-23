@@ -149,6 +149,10 @@ data class MemoRow(@Embedded val memo: MemoEntity, val eventTitle: String?, val 
 
 @Dao
 interface SchedulerDao {
+    @Transaction @Query("SELECT * FROM daily_tasks") fun observeAllDailyTasks(): Flow<List<DailyTaskDetails>>
+    @Query("SELECT * FROM daily_task_records") fun observeAllDailyRecords(): Flow<List<DailyTaskRecordEntity>>
+    @Query("SELECT * FROM personal_daily_tasks") fun observeAllPersonalTasks(): Flow<List<PersonalTaskEntity>>
+    @Query("SELECT * FROM personal_daily_records") fun observeAllPersonalRecords(): Flow<List<PersonalRecordEntity>>
     @Query("UPDATE games SET appPackageName = :packageName, appLabel = :label WHERE profileKey = :profile")
     suspend fun setGameApp(profile: String, packageName: String?, label: String?)
     @Query("SELECT * FROM memos WHERE memoId = :id") suspend fun memo(id: String): MemoEntity?

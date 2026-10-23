@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
+    android:padding="16dp" android:background="#F4F6FA" android:layout_width="match_parent" android:layout_height="match_parent">
+    <Button android:id="@+id/back" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="뒤로" />
+    <TextView android:id="@+id/heading" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold" android:textColor="#18243B" />
+    <TextView android:id="@+id/detailInfo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="선택한 일정 먼저 · 참여와 교환은 별도 체크" />
+    <Button android:id="@+id/detailDaily" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="이 게임의 일일 숙제 · 완료 기록" />
+    <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityLiveRegion="polite" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/detailEvents" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+</LinearLayout>

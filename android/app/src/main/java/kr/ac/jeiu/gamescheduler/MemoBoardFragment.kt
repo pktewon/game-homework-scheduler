@@ -34,9 +34,7 @@ class MemoBoardFragment : Fragment(R.layout.fragment_memo_board) {
                 .addToBackStack("memo-editor").commit()
         }
         val adapter = MemoAdapter(onEdit = { edit(it.memo.memoId) }, onEvent = { row ->
-            parentFragmentManager.beginTransaction().replace(R.id.container, GameEventsFragment().apply {
-                arguments = Bundle().apply { putString("profileKey", model.profile); putString("focusEventKey", row.memo.eventKey) }
-            }).addToBackStack("memo-event").commit()
+            parentFragmentManager.beginTransaction().replace(R.id.container, EventDetailFragment.create(requireNotNull(row.memo.eventKey))).addToBackStack("memo-event").commit()
         })
         b.memos.layoutManager = LinearLayoutManager(requireContext()); b.memos.adapter = adapter
         b.back.setOnClickListener { parentFragmentManager.popBackStack() }

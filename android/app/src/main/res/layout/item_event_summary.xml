@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:background="#FFFFFF" android:padding="14dp" android:layout_marginBottom="10dp"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:id="@+id/summaryStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="#345EAD" />
+    <TextView android:id="@+id/summaryTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="4dp" android:textSize="18sp" android:textStyle="bold" android:textColor="#18243B" />
+    <TextView android:id="@+id/summaryTime" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
+    <Button android:id="@+id/openDetail" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="상세 보기 · 참여/보상 체크" />
+</LinearLayout>

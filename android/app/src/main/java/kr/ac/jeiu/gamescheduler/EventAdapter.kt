@@ -19,30 +19,22 @@ fun displayTime(value: Long?): String = value?.let { timeFormat.format(Instant.o
 data class EventCard(val details: EventDetails, val now: Long, val gameName: String = "") {
     private val event get() = details.event
     val allDone get() = details.checks.filterNot { it.missingFromLatest }.let { it.isNotEmpty() && it.all { c -> c.isDone } }
-    val rank: Int get() = when {
-        event.missingFromLatest -> 6
-        event.timeShape == "INSTANT" -> 5
-        event.timeState == "NEEDS_REVIEW" -> 1
-        event.endAt!! <= now -> 4
-        event.startAt!! > now -> 2
-        allDone -> 3
-        else -> 0
-    }
-    val sortTime get() = when (rank) { 0, 3, 4 -> event.endAt; 2 -> event.startAt; 5 -> event.occursAt; else -> null } ?: Long.MAX_VALUE
-    val label get() = when (rank) {
-        0 -> if (event.endAt!! - now <= 86_400_000L) "종료 임박 · 24시간 이내" else "진행 중 · 남은 항목 확인"
-        1 -> "기간 확인 필요"
-        2 -> "예정된 이벤트"
-        3 -> "진행 중 · 체크 완료"
-        4 -> "기간 종료 · 기록 보관"
-        5 -> "콘텐츠 업데이트 알림"
-        else -> if (event.isUserCreated) "교환 일정 숨김 · 기록 유지" else "최신 공지에서 빠짐 · 기록 유지"
-    }
+    val status get() = eventStatus(details, now)
+    val rank get() = status.rank
+    val sortTime get() = when (status) {
+        EventStatus.UPCOMING -> event.startAt
+        EventStatus.INSTANT -> event.occursAt
+        else -> event.endAt
+    } ?: Long.MAX_VALUE
+    val label get() = if (status == EventStatus.ONGOING && event.endAt!! - now <= 86_400_000L)
+        "종료 임박 · 24시간 이내" else when (status) { EventStatus.REVIEW -> "기간 확인 필요"; EventStatus.ARCHIVED -> "보관 · 기록 유지"; else -> status.label }
+
 }
 
 class EventAdapter(private val onCheck: (String, String, Boolean) -> Unit, private val onSource: (String) -> Unit,
                    private val onEdit: (kr.ac.jeiu.gamescheduler.data.EventEntity) -> Unit = {},
-                   private val onMemos: (kr.ac.jeiu.gamescheduler.data.EventEntity) -> Unit = {}) :
+                   private val onMemos: (kr.ac.jeiu.gamescheduler.data.EventEntity) -> Unit = {},
+                   private val onDetail: ((kr.ac.jeiu.gamescheduler.data.EventEntity) -> Unit)? = null) :
     ListAdapter<EventCard, EventAdapter.Holder>(object : DiffUtil.ItemCallback<EventCard>() {
         override fun areItemsTheSame(a: EventCard, b: EventCard) = a.details.event.sourceKey == b.details.event.sourceKey
         override fun areContentsTheSame(a: EventCard, b: EventCard) = a == b
@@ -54,7 +46,7 @@ class EventAdapter(private val onCheck: (String, String, Boolean) -> Unit, priva
         val details = card.details
         val event = details.event
         with(holder.binding) {
-            section.text = card.label
+            section.text = "${card.label} · ${phaseLabel(event)} · ${eventProgress(details)}\n${eventTimeHint(event, card.now)}"
             gameName.text = card.gameName
             gameName.isVisible = card.gameName.isNotBlank()
             title.text = event.title
@@ -66,7 +58,8 @@ class EventAdapter(private val onCheck: (String, String, Boolean) -> Unit, priva
             checks.removeAllViews()
             details.checks.sortedBy { it.sortOrder }.forEach { item ->
                 checks.addView(CheckBox(root.context).apply {
-                    text = item.title + if (item.missingFromLatest) " (이전 항목 · 기록 유지)" else ""
+                    text = item.title + (if (item.missingFromLatest) " (이전 항목 · 기록 유지)" else "") +
+                        (if (item.isDone) "\n완료: ${displayTime(item.completedAt)} (한국 시간)" else "")
                     minHeight = (48 * resources.displayMetrics.density).toInt()
                     isChecked = item.isDone
                     isEnabled = !(event.isUserCreated && event.missingFromLatest)
@@ -82,6 +75,8 @@ class EventAdapter(private val onCheck: (String, String, Boolean) -> Unit, priva
             editEvent.isVisible = event.isUserCreated
             editEvent.setOnClickListener { onEdit(event) }
             eventMemos.setOnClickListener { onMemos(event) }
+            eventDetail.isVisible = onDetail != null
+            eventDetail.setOnClickListener { onDetail?.invoke(event) }
         }
     }
 }

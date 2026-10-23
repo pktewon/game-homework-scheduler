@@ -26,7 +26,7 @@
 - 저장소명: `game-homework-scheduler`
 - 실제 주소: https://github.com/pktewon/game-homework-scheduler
 - 공개 범위: 공개. 교수자가 로그인 없이 기획·설계 자료를 열람할 수 있다.
-- 중간고사: README, 기획서 PDF·Word, 화면 시안, 이동 흐름도, DB·처리 설계를 올린다.
+- 중간고사: 공개 저장소에는 개인정보를 제외한 README·화면 시안·이동 흐름도·DB·처리 설계를 올린다. 이름·학번이 포함된 기획서 PDF·Word는 학교 제출 사이트에서 관리한다.
 - 기말: Android 프로젝트 소스와 Gradle Wrapper를 추가하고, 실행 환경과 방법을 실제 구현에 맞춰 작성한다.
 - 기능 단위로 커밋한다. 예: `feat: add event editing`, `feat: save daily completion records`, `fix: preserve records after reset`.
 - 문서 커밋 예: `docs: add midterm project planning`.
@@ -64,7 +64,7 @@
 | 같은 JSON을 다시 받음 | 확장 구현 시 중복 이벤트 생성 방지 |
 | 갱신 실패 또는 공지 날짜 변경 | 확장 구현 시 기록 보존과 확인 필요 상태 표시 |
 
-위 기능 점검은 구현 단계에서 수행할 계획이며 현재 앱 테스트가 완료되었다는 의미는 아니다.
+위 표는 최초 기말 점검 계획이다. 현재 앱 0.8.0의 구현·105개 테스트와 에뮬레이터 검증 범위는 [Android 구현](android-implementation.md)과 [홈·상세 화면](home-and-detail.md)을 기준으로 확인한다. 실제 게임·물리 휴대폰 검증은 남아 있다.
 
 ## AI 활용 기록
 

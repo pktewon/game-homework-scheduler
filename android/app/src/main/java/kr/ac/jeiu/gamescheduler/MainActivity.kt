@@ -23,11 +23,9 @@ class MainActivity : FragmentActivity() {
         super.onNewIntent(intent); setIntent(intent); openDeadline(intent)
     }
     private fun openDeadline(intent: Intent) {
-        val profile = intent.getStringExtra("deadlineProfile") ?: return
+        if (intent.getStringExtra("deadlineProfile") == null) return
         val event = intent.getStringExtra("deadlineEvent") ?: return
         supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        supportFragmentManager.beginTransaction().replace(R.id.container, GameEventsFragment().apply {
-            arguments = Bundle().apply { putString("profileKey", profile); putString("focusEventKey", event) }
-        }).addToBackStack("notification-event").commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, EventDetailFragment.create(event)).addToBackStack("notification-event").commit()
     }
 }

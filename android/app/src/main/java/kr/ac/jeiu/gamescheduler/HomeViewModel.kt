@@ -3,6 +3,7 @@ package kr.ac.jeiu.gamescheduler
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -13,20 +14,31 @@ data class HomeState(
     val events: List<EventDetails> = emptyList(), val sync: SyncStateEntity? = null,
     val busy: Boolean = false, val message: String = "", val now: Long = System.currentTimeMillis(),
     val gameNames: Map<String, String> = emptyMap(),
+    val daily: List<GameDailySummary> = emptyList(), val filter: EventFilter = EventFilter.ALL,
 )
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class HomeViewModel(application: Application, private val saved: SavedStateHandle) : AndroidViewModel(application) {
     private val repository = (application as SchedulerApp).repository
     private val dao = (application as SchedulerApp).database.dao()
     private val busy = MutableStateFlow(false)
     private val message = MutableStateFlow("")
-    private val ticks = flow {
+    private val resumedAt = MutableStateFlow(0L)
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    private val ticks = resumedAt.flatMapLatest { flow {
         while (true) { emit(System.currentTimeMillis()); delay(30_000) }
-    }
+    } }
+    private val daily = combine(dao.observeAllDailyTasks(), dao.observeAllDailyRecords(),
+        dao.observeAllPersonalTasks(), dao.observeAllPersonalRecords(), ::HomeDailyData)
+    private val filter = saved.getStateFlow("eventFilter", EventFilter.ALL.name)
+    fun filter(value: EventFilter) { saved["eventFilter"] = value.name }
+    fun resumed() { resumedAt.value = System.nanoTime() }
     private val content = combine(dao.observeAllEvents(), repository.syncState, busy, message, ticks) { events, sync, loading, info, now ->
         HomeState(events, sync, loading, info, now)
     }
-    val state = combine(content, dao.observeGames()) { state, games -> state.copy(gameNames = games.associate { it.profileKey to it.name }) }
+    val state = combine(content, dao.observeGames(), daily, filter) { state, games, tasks, selected ->
+        state.copy(gameNames = games.associate { it.profileKey to it.name }, daily = summarizeDaily(games, tasks, state.now),
+            filter = EventFilter.entries.firstOrNull { it.name == selected } ?: EventFilter.ALL)
+    }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeState())
 
     init { refresh() }

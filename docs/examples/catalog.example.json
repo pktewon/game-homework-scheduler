@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "catalogRevision": 1,
+  "generatedAt": "2030-04-30T19:00:00Z",
+  "exampleOnly": true,
+  "description": "형식 설명용 가상 데이터. 게임 이벤트·날짜·초기화 설정은 실제 운영 정보가 아님. 운영 앱에서 가져오기 금지.",
+  "profile": {
+    "profileKey": "endfield-gryphline-asia",
+    "gameKey": "endfield",
+    "publisherKey": "GRYPHLINE",
+    "serverRegion": "ASIA",
+    "locale": "ko-KR",
+    "exampleServerUtcOffset": "+08:00",
+    "exampleDailyResetMinute": 240
+  },
+  "parseState": "EXAMPLE",
+  "groups": [
+    {
+      "groupKey": "demo-spring",
+      "title": "설계 예시 · 봄맞이 작전",
+      "phases": [
+        {
+          "sourceKey": "endfield-gryphline-asia:demo-spring:play",
+          "revision": 1,
+          "phaseKind": "PLAY",
+          "title": "설계 예시 · 참여 마감",
+          "startAt": "2030-04-30T20:00:00Z",
+          "endAt": "2030-05-07T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "checkTemplates": [
+            {
+              "sourceItemKey": "play-goal",
+              "title": "선택한 참여 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "play-rewards",
+              "title": "참여 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": [
+            {
+              "sourceTaskKey": "daily-goal-and-reward",
+              "title": "오늘 이벤트 목표와 일일 보상 확인",
+              "recurrence": "DAILY",
+              "resetPolicy": "GAME_RESET"
+            }
+          ],
+          "sourceCheckedAt": "2030-04-30T18:55:00Z",
+          "sourceUrl": "https://example.invalid/notices/demo-001",
+          "sourceEvidence": {
+            "locator": "설명용 가상 공지의 PLAY 소제목",
+            "periodText": "가상 예시의 기간: 2030-04-30T20:00:00Z ~ 2030-05-07T20:00:00Z",
+            "timeZoneBasis": "예시를 UTC로 표현. 실제 공지에서 추출한 기간이 아님."
+          }
+        },
+        {
+          "sourceKey": "endfield-gryphline-asia:demo-spring:stage-2",
+          "revision": 1,
+          "phaseKind": "STAGE",
+          "title": "설계 예시 · 후반부 도전",
+          "startAt": "2030-05-04T04:00:00Z",
+          "endAt": "2030-05-07T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "checkTemplates": [
+            {
+              "sourceItemKey": "stage-2-goal",
+              "title": "후반부 목표 달성 확인"
+            },
+            {
+              "sourceItemKey": "stage-2-rewards",
+              "title": "후반부 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": [],
+          "sourceCheckedAt": "2030-04-30T18:55:00Z",
+          "sourceUrl": "https://example.invalid/notices/demo-001",
+          "sourceEvidence": {
+            "locator": "설명용 가상 공지의 STAGE 소제목",
+            "periodText": "가상 예시의 기간: 2030-05-04T04:00:00Z ~ 2030-05-07T20:00:00Z",
+            "timeZoneBasis": "예시를 UTC로 표현. 실제 공지에서 추출한 기간이 아님."
+          }
+        },
+        {
+          "sourceKey": "endfield-gryphline-asia:demo-spring:shop",
+          "revision": 1,
+          "phaseKind": "SHOP",
+          "title": "설계 예시 · 상점 교환 마감",
+          "startAt": "2030-04-30T20:00:00Z",
+          "endAt": "2030-05-14T20:00:00Z",
+          "timeState": "CONFIRMED",
+          "checkTemplates": [
+            {
+              "sourceItemKey": "wanted-exchanges",
+              "title": "원하는 교환 보상 수령 확인"
+            }
+          ],
+          "dailyTaskTemplates": [],
+          "sourceCheckedAt": "2030-04-30T18:55:00Z",
+          "sourceUrl": "https://example.invalid/notices/demo-001",
+          "sourceEvidence": {
+            "locator": "설명용 가상 공지의 SHOP 소제목",
+            "periodText": "가상 예시의 기간: 2030-04-30T20:00:00Z ~ 2030-05-14T20:00:00Z",
+            "timeZoneBasis": "예시를 UTC로 표현. 실제 공지에서 추출한 기간이 아님."
+          }
+        }
+      ]
+    }
+  ]
+}

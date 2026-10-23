@@ -4,7 +4,8 @@
     <TextView android:id="@+id/title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="20sp" android:textStyle="bold" />
     <TextView android:id="@+id/info" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
     <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-        <Button android:id="@+id/openDaily" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="일일 숙제 · 기록" />
+        <Button android:id="@+id/openDaily" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="숙제 · 기록" />
+        <Button android:id="@+id/openEvents" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="이벤트" />
         <Button android:id="@+id/editGame" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="게임 수정" />
     </LinearLayout>
 </LinearLayout>

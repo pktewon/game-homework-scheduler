@@ -2,7 +2,7 @@
 
 게임 숙제 스케줄러
 
-DB 이름은 `game_scheduler_database`이다. 이 문서는 중간고사 시점의 6개 테이블 논리 설계다. 현재는 완료 기록과 개인 숙제를 분리한 9개 테이블을 사용한다. 실제 스키마·보존 규칙은 [Android 구현](android-implementation.md), [개인 등록·수정](manual-registration.md), [일일 회차](daily-tasks.md)가 기준이다. 메모는 후속 구현이다.
+DB 이름은 `game_scheduler_database`이다. 이 문서는 중간고사 시점의 6개 테이블 논리 설계다. 현재는 완료 기록과 개인 숙제를 분리한 9개 테이블을 사용한다. 실제 스키마·보존 규칙은 [Android 구현](android-implementation.md), [개인 등록·수정](manual-registration.md), [일일 회차](daily-tasks.md), [이벤트 직접 등록·수정](manual-events.md)이 기준이다. 메모는 후속 구현이다.
 
 ![데이터베이스 관계도](design/database-relations.png)
 

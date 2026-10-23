@@ -1,0 +1,609 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "be824a42d0374af9556b8d3b45f038f4",
+    "entities": [
+      {
+        "tableName": "games",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profileKey` TEXT NOT NULL, `name` TEXT NOT NULL, `serverUtcOffset` TEXT NOT NULL, `dailyResetMinute` INTEGER, `serverLabel` TEXT NOT NULL DEFAULT 'Asia', `isUserCreated` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`profileKey`))",
+        "fields": [
+          {
+            "fieldPath": "profileKey",
+            "columnName": "profileKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serverUtcOffset",
+            "columnName": "serverUtcOffset",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dailyResetMinute",
+            "columnName": "dailyResetMinute",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "serverLabel",
+            "columnName": "serverLabel",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'Asia'"
+          },
+          {
+            "fieldPath": "isUserCreated",
+            "columnName": "isUserCreated",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "profileKey"
+          ]
+        }
+      },
+      {
+        "tableName": "events",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sourceKey` TEXT NOT NULL, `profileKey` TEXT NOT NULL, `groupKey` TEXT NOT NULL, `groupTitle` TEXT NOT NULL, `title` TEXT NOT NULL, `revision` INTEGER NOT NULL, `phaseKind` TEXT NOT NULL, `timeShape` TEXT NOT NULL, `occursAt` INTEGER, `startAt` INTEGER, `endAt` INTEGER, `timeState` TEXT NOT NULL, `sourceUrl` TEXT NOT NULL, `evidenceJson` TEXT NOT NULL, `notes` TEXT NOT NULL, `missingFromLatest` INTEGER NOT NULL, `isUserCreated` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`sourceKey`), FOREIGN KEY(`profileKey`) REFERENCES `games`(`profileKey`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "sourceKey",
+            "columnName": "sourceKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profileKey",
+            "columnName": "profileKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupKey",
+            "columnName": "groupKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupTitle",
+            "columnName": "groupTitle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "revision",
+            "columnName": "revision",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phaseKind",
+            "columnName": "phaseKind",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeShape",
+            "columnName": "timeShape",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "occursAt",
+            "columnName": "occursAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "startAt",
+            "columnName": "startAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "endAt",
+            "columnName": "endAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "timeState",
+            "columnName": "timeState",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceUrl",
+            "columnName": "sourceUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "evidenceJson",
+            "columnName": "evidenceJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "missingFromLatest",
+            "columnName": "missingFromLatest",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isUserCreated",
+            "columnName": "isUserCreated",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "sourceKey"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_events_profileKey",
+            "unique": false,
+            "columnNames": [
+              "profileKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_events_profileKey` ON `${TABLE_NAME}` (`profileKey`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "games",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "profileKey"
+            ],
+            "referencedColumns": [
+              "profileKey"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "check_templates",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventKey` TEXT NOT NULL, `sourceItemKey` TEXT NOT NULL, `title` TEXT NOT NULL, `sortOrder` INTEGER NOT NULL, `missingFromLatest` INTEGER NOT NULL, PRIMARY KEY(`eventKey`, `sourceItemKey`), FOREIGN KEY(`eventKey`) REFERENCES `events`(`sourceKey`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "eventKey",
+            "columnName": "eventKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceItemKey",
+            "columnName": "sourceItemKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sortOrder",
+            "columnName": "sortOrder",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "missingFromLatest",
+            "columnName": "missingFromLatest",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventKey",
+            "sourceItemKey"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "events",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "eventKey"
+            ],
+            "referencedColumns": [
+              "sourceKey"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "check_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventKey` TEXT NOT NULL, `sourceItemKey` TEXT NOT NULL, `isDone` INTEGER NOT NULL, `completedAt` INTEGER, PRIMARY KEY(`eventKey`, `sourceItemKey`), FOREIGN KEY(`eventKey`, `sourceItemKey`) REFERENCES `check_templates`(`eventKey`, `sourceItemKey`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "eventKey",
+            "columnName": "eventKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceItemKey",
+            "columnName": "sourceItemKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDone",
+            "columnName": "isDone",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completedAt",
+            "columnName": "completedAt",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventKey",
+            "sourceItemKey"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "check_templates",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "eventKey",
+              "sourceItemKey"
+            ],
+            "referencedColumns": [
+              "eventKey",
+              "sourceItemKey"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "daily_tasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventKey` TEXT NOT NULL, `sourceTaskKey` TEXT NOT NULL, `title` TEXT NOT NULL, `templateJson` TEXT NOT NULL, `missingFromLatest` INTEGER NOT NULL, PRIMARY KEY(`eventKey`, `sourceTaskKey`), FOREIGN KEY(`eventKey`) REFERENCES `events`(`sourceKey`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "eventKey",
+            "columnName": "eventKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceTaskKey",
+            "columnName": "sourceTaskKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "templateJson",
+            "columnName": "templateJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "missingFromLatest",
+            "columnName": "missingFromLatest",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventKey",
+            "sourceTaskKey"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "events",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "eventKey"
+            ],
+            "referencedColumns": [
+              "sourceKey"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "daily_task_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventKey` TEXT NOT NULL, `sourceTaskKey` TEXT NOT NULL, `cycleStartAt` INTEGER NOT NULL, `completedAt` INTEGER NOT NULL, `resetMinuteAtCompletion` INTEGER, `periodConfirmedByUser` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`eventKey`, `sourceTaskKey`, `cycleStartAt`), FOREIGN KEY(`eventKey`, `sourceTaskKey`) REFERENCES `daily_tasks`(`eventKey`, `sourceTaskKey`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "eventKey",
+            "columnName": "eventKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceTaskKey",
+            "columnName": "sourceTaskKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cycleStartAt",
+            "columnName": "cycleStartAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completedAt",
+            "columnName": "completedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resetMinuteAtCompletion",
+            "columnName": "resetMinuteAtCompletion",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "periodConfirmedByUser",
+            "columnName": "periodConfirmedByUser",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventKey",
+            "sourceTaskKey",
+            "cycleStartAt"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "daily_tasks",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "eventKey",
+              "sourceTaskKey"
+            ],
+            "referencedColumns": [
+              "eventKey",
+              "sourceTaskKey"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "sync_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profileKey` TEXT NOT NULL, `releaseRevision` INTEGER NOT NULL, `contentHash` TEXT NOT NULL, `sourceCheckedAt` INTEGER NOT NULL, `lastSuccessAt` INTEGER NOT NULL, PRIMARY KEY(`profileKey`), FOREIGN KEY(`profileKey`) REFERENCES `games`(`profileKey`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "profileKey",
+            "columnName": "profileKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "releaseRevision",
+            "columnName": "releaseRevision",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contentHash",
+            "columnName": "contentHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceCheckedAt",
+            "columnName": "sourceCheckedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastSuccessAt",
+            "columnName": "lastSuccessAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "profileKey"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "games",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "profileKey"
+            ],
+            "referencedColumns": [
+              "profileKey"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "personal_daily_tasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`taskId` TEXT NOT NULL, `profileKey` TEXT NOT NULL, `title` TEXT NOT NULL, `notes` TEXT NOT NULL, `enabled` INTEGER NOT NULL, PRIMARY KEY(`taskId`), FOREIGN KEY(`profileKey`) REFERENCES `games`(`profileKey`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "taskId",
+            "columnName": "taskId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profileKey",
+            "columnName": "profileKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "taskId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_personal_daily_tasks_profileKey",
+            "unique": false,
+            "columnNames": [
+              "profileKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_personal_daily_tasks_profileKey` ON `${TABLE_NAME}` (`profileKey`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "games",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "profileKey"
+            ],
+            "referencedColumns": [
+              "profileKey"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "personal_daily_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`taskId` TEXT NOT NULL, `cycleStartAt` INTEGER NOT NULL, `completedAt` INTEGER NOT NULL, `resetMinuteAtCompletion` INTEGER NOT NULL, `serverUtcOffsetAtCompletion` TEXT NOT NULL, PRIMARY KEY(`taskId`, `cycleStartAt`), FOREIGN KEY(`taskId`) REFERENCES `personal_daily_tasks`(`taskId`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "taskId",
+            "columnName": "taskId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cycleStartAt",
+            "columnName": "cycleStartAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completedAt",
+            "columnName": "completedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resetMinuteAtCompletion",
+            "columnName": "resetMinuteAtCompletion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serverUtcOffsetAtCompletion",
+            "columnName": "serverUtcOffsetAtCompletion",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "taskId",
+            "cycleStartAt"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "personal_daily_tasks",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "taskId"
+            ],
+            "referencedColumns": [
+              "taskId"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      {
+        "viewName": "CheckRow",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT t.eventKey, t.sourceItemKey, t.title, t.sortOrder, t.missingFromLatest,\n    COALESCE(r.isDone, 0) AS isDone, r.completedAt FROM check_templates t\n    LEFT JOIN check_records r ON t.eventKey = r.eventKey AND t.sourceItemKey = r.sourceItemKey"
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'be824a42d0374af9556b8d3b45f038f4')"
+    ]
+  }
+}

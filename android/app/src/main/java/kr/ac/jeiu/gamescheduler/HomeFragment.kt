@@ -25,9 +25,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             v.setPadding(padding + bars.left, padding + bars.top, padding + bars.right, padding + bars.bottom)
             insets
         }
-        val adapter = EventAdapter(model::setChecked) { url ->
+        val adapter = EventAdapter(onCheck = model::setChecked, onSource = { url ->
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        }
+        }, onEdit = { event ->
+            parentFragmentManager.beginTransaction().replace(R.id.container,
+                EventEditorFragment.create(event.profileKey, event.groupKey)).addToBackStack("edit-event").commit()
+        })
         binding.events.layoutManager = LinearLayoutManager(requireContext())
         binding.events.adapter = adapter
         binding.refresh.setOnClickListener { model.refresh() }
@@ -46,7 +49,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         state.sync?.let { append("\n원문 확인: ${displayTime(it.sourceCheckedAt)} · 기기 저장: ${displayTime(it.lastSuccessAt)}") }
                         if (state.events.isEmpty() && !state.busy) append("\n저장된 일정이 없습니다. 새로고침으로 가져오세요.")
                     }
-                    adapter.submitList(state.events.map { EventCard(it, state.now) }.sortedWith(
+                    adapter.submitList(state.events.map { EventCard(it, state.now, state.gameNames[it.event.profileKey].orEmpty()) }.sortedWith(
                         compareBy<EventCard> { it.rank }.thenBy { it.sortTime }.thenBy { it.details.event.title }))
                 }
             }

@@ -73,6 +73,7 @@ class CatalogRepository(
             dao.markTasksMissing(PROFILE)
             for (phase in catalog.phases) {
                 val old = dao.event(phase.event.sourceKey)
+                demand(old == null || !old.isUserCreated, "직접 등록한 일정은 공식 피드로 덮어쓸 수 없습니다.")
                 demand(old == null || phase.event.revision >= old.revision, "일정 개정 번호가 이전보다 낮습니다.")
                 // Metadata tables are upserted; user records are never replaced or reset.
                 dao.putEvent(phase.event)

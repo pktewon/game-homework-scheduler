@@ -54,6 +54,7 @@ data class EventEntity(
     val evidenceJson: String,
     val notes: String,
     val missingFromLatest: Boolean = false,
+    @ColumnInfo(defaultValue = "0") val isUserCreated: Boolean = false,
 )
 
 @Entity(tableName = "check_templates", primaryKeys = ["eventKey", "sourceItemKey"], foreignKeys = [ForeignKey(
@@ -166,26 +167,29 @@ interface SchedulerDao {
     @Query("SELECT * FROM sync_state WHERE profileKey = :profile") suspend fun syncState(profile: String): SyncStateEntity?
     @Query("SELECT * FROM sync_state WHERE profileKey = :profile") fun observeSyncState(profile: String): Flow<SyncStateEntity?>
     @Query("SELECT * FROM events WHERE sourceKey = :key") suspend fun event(key: String): EventEntity?
+    @Query("SELECT * FROM events WHERE profileKey = :profile AND groupKey = :groupKey")
+    suspend fun eventGroup(profile: String, groupKey: String): List<EventEntity>
     @Query("SELECT * FROM check_templates WHERE eventKey = :eventKey AND sourceItemKey = :itemKey")
     suspend fun check(eventKey: String, itemKey: String): CheckTemplateEntity?
     @Query("SELECT * FROM check_records WHERE eventKey = :eventKey AND sourceItemKey = :itemKey")
     suspend fun checkRecord(eventKey: String, itemKey: String): CheckRecordEntity?
     @Query("SELECT * FROM daily_task_records") suspend fun dailyRecords(): List<DailyTaskRecordEntity>
-    @Query("UPDATE events SET missingFromLatest = 1 WHERE profileKey = :profile") suspend fun markEventsMissing(profile: String)
-    @Query("UPDATE check_templates SET missingFromLatest = 1 WHERE eventKey IN (SELECT sourceKey FROM events WHERE profileKey = :profile)")
+    @Query("UPDATE events SET missingFromLatest = 1 WHERE profileKey = :profile AND isUserCreated = 0") suspend fun markEventsMissing(profile: String)
+    @Query("UPDATE check_templates SET missingFromLatest = 1 WHERE eventKey IN (SELECT sourceKey FROM events WHERE profileKey = :profile AND isUserCreated = 0)")
     suspend fun markChecksMissing(profile: String)
-    @Query("UPDATE daily_tasks SET missingFromLatest = 1 WHERE eventKey IN (SELECT sourceKey FROM events WHERE profileKey = :profile)")
+    @Query("UPDATE daily_tasks SET missingFromLatest = 1 WHERE eventKey IN (SELECT sourceKey FROM events WHERE profileKey = :profile AND isUserCreated = 0)")
     suspend fun markTasksMissing(profile: String)
     @Transaction @Query("SELECT * FROM events WHERE profileKey = :profile")
     fun observeEvents(profile: String): Flow<List<EventDetails>>
     @Transaction @Query("SELECT * FROM events WHERE profileKey = :profile")
     suspend fun events(profile: String): List<EventDetails>
+    @Transaction @Query("SELECT * FROM events") fun observeAllEvents(): Flow<List<EventDetails>>
 }
 
 @Database(entities = [GameEntity::class, EventEntity::class, CheckTemplateEntity::class,
     CheckRecordEntity::class, DailyTaskEntity::class, DailyTaskRecordEntity::class, SyncStateEntity::class,
     PersonalTaskEntity::class, PersonalRecordEntity::class],
-    views = [CheckRow::class], version = 3, exportSchema = true)
+    views = [CheckRow::class], version = 4, exportSchema = true)
 abstract class SchedulerDatabase : RoomDatabase() {
     abstract fun dao(): SchedulerDao
     companion object {
@@ -209,6 +213,11 @@ abstract class SchedulerDatabase : RoomDatabase() {
                     resetMinuteAtCompletion INTEGER NOT NULL, serverUtcOffsetAtCompletion TEXT NOT NULL,
                     PRIMARY KEY(taskId, cycleStartAt), FOREIGN KEY(taskId) REFERENCES personal_daily_tasks(taskId)
                     ON UPDATE NO ACTION ON DELETE RESTRICT)""")
+            }
+        }
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE events ADD COLUMN isUserCreated INTEGER NOT NULL DEFAULT 0")
             }
         }
     }

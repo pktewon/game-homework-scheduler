@@ -189,7 +189,7 @@ class PersonalizationTest {
             legacy.version = 2
         }
         val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name)
-            .addMigrations(SchedulerDatabase.MIGRATION_2_3).build()
+            .addMigrations(SchedulerDatabase.MIGRATION_2_3, SchedulerDatabase.MIGRATION_3_4).build()
         try {
             assertEquals(240, migrated.dao().game(PROFILE)!!.dailyResetMinute)
             assertEquals("내 엔필", migrated.dao().game(PROFILE)!!.name)

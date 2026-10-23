@@ -3,6 +3,7 @@
     android:layout_marginBottom="10dp" android:layout_width="match_parent" android:layout_height="wrap_content">
     <TextView android:id="@+id/section" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:textColor="#345EAD" android:textStyle="bold" android:textSize="13sp" />
+    <TextView android:id="@+id/gameName" android:layout_width="match_parent" android:layout_height="wrap_content" android:textStyle="bold" />
     <TextView android:id="@+id/title" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:paddingTop="4dp" android:textSize="18sp" android:textColor="#18243B" android:textStyle="bold" />
     <TextView android:id="@+id/period" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
@@ -10,4 +11,5 @@
     <LinearLayout android:id="@+id/checks" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" />
     <TextView android:id="@+id/daily" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="4dp" />
     <Button android:id="@+id/source" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="공식 공지 보기" />
+    <Button android:id="@+id/editEvent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="이벤트 수정" />
 </LinearLayout>

@@ -241,7 +241,7 @@ class DailyTasksTest {
             legacy.version = 1
         }
         val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name)
-            .addMigrations(SchedulerDatabase.MIGRATION_1_2, SchedulerDatabase.MIGRATION_2_3).build()
+            .addMigrations(SchedulerDatabase.MIGRATION_1_2, SchedulerDatabase.MIGRATION_2_3, SchedulerDatabase.MIGRATION_3_4).build()
         try {
             assertEquals(240, migrated.dao().game(PROFILE)!!.dailyResetMinute)
             assertTrue(migrated.dao().checkRecord(EVENT, "goal")!!.isDone)
@@ -253,7 +253,7 @@ class DailyTasksTest {
             clock.time = cycle().endAt
             daily.setChecked(EVENT, TASK, cycle(), true)
             assertEquals(2, daily.history.first().size)
-            assertEquals(3, migrated.openHelper.readableDatabase.version)
+            assertEquals(4, migrated.openHelper.readableDatabase.version)
         } finally { migrated.close(); context.deleteDatabase(name) }
     }
 }

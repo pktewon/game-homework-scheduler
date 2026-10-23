@@ -35,7 +35,10 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
         val adapter = GamesAdapter(onOpen = { game ->
             val daily = DailyFragment().apply { arguments = Bundle().apply { putString("profileKey", game.profileKey) } }
             parentFragmentManager.beginTransaction().replace(R.id.container, daily).addToBackStack("game-daily").commit()
-        }, onEdit = ::editGame)
+        }, onEdit = ::editGame, onEvents = { game ->
+            val events = GameEventsFragment().apply { arguments = Bundle().apply { putString("profileKey", game.profileKey) } }
+            parentFragmentManager.beginTransaction().replace(R.id.container, events).addToBackStack("game-events").commit()
+        })
         binding.games.layoutManager = LinearLayoutManager(requireContext())
         binding.games.adapter = adapter
         binding.back.setOnClickListener { parentFragmentManager.popBackStack() }
@@ -91,7 +94,8 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
     }
 }
 
-private class GamesAdapter(private val onOpen: (GameEntity) -> Unit, private val onEdit: (GameEntity) -> Unit) :
+private class GamesAdapter(private val onOpen: (GameEntity) -> Unit, private val onEdit: (GameEntity) -> Unit,
+                           private val onEvents: (GameEntity) -> Unit) :
     ListAdapter<GameEntity, GamesAdapter.Holder>(object : DiffUtil.ItemCallback<GameEntity>() {
         override fun areItemsTheSame(a: GameEntity, b: GameEntity) = a.profileKey == b.profileKey
         override fun areContentsTheSame(a: GameEntity, b: GameEntity) = a == b
@@ -103,9 +107,10 @@ private class GamesAdapter(private val onOpen: (GameEntity) -> Unit, private val
         with(holder.binding) {
             title.text = game.name
             info.text = "${game.serverLabel}\n${resetText(game.dailyResetMinute, game.serverUtcOffset)}\n" +
-                if (game.profileKey == PROFILE) "공식 일정 수신 + 직접 등록 숙제" else "직접 등록 숙제 · 공식 일정 수집은 아직 지원하지 않음"
+                if (game.profileKey == PROFILE) "공식 일정 수신 + 직접 등록 이벤트·숙제" else "직접 등록 이벤트·숙제 · 공식 일정 수집은 아직 지원하지 않음"
             openDaily.setOnClickListener { onOpen(game) }
             editGame.setOnClickListener { onEdit(game) }
+            openEvents.setOnClickListener { onEvents(game) }
         }
     }
 }

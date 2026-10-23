@@ -2,7 +2,7 @@
 
 김태준 · 2026626007 · 게임 숙제 스케줄러
 
-DB 이름은 `game_scheduler_database`이다. 이 문서는 중간고사 시점의 6개 기본 테이블 논리 설계다. 이후 JSON 수신 기능을 구현하면서 완료 기록을 별도 테이블로 분리했다. 현재 구현의 7개 테이블·PK·보존 규칙과 내보낸 실제 스키마는 [Android 구현 문서](android-implementation.md)에 있다. 메모와 일일 회차 UI 등은 아직 후속 구현이다.
+DB 이름은 `game_scheduler_database`이다. 이 문서는 중간고사 시점의 6개 기본 테이블 논리 설계다. 이후 완료 기록을 별도 테이블로 분리했다. 현재 구현의 7개 테이블·PK·보존 규칙과 실제 스키마는 [Android 구현 문서](android-implementation.md)에 있다. 일일 회차 UI와 초기화 설정도 구현했으며 [일일 숙제 안내](daily-tasks.md)에 정리했다. 메모는 후속 구현이다.
 
 ![데이터베이스 관계도](design/database-relations.png)
 
@@ -158,6 +158,6 @@ DB 이름은 `game_scheduler_database`이다. 이 문서는 중간고사 시점�
 
 ## 자동 수신에 필요한 보완 설계
 
-이용 프로필, 세부 일정 개정, 템플릿 고정 키의 보완안은 [공지 수집 상세 설계의 Room 저장 보완](notice-ingestion-design.md#room-저장-보완)에 정의했다. 첫 Android DB는 스키마 버전 1이며, 초기화 미확정은 `dailyResetMinute=NULL`로 저장한다. 실제 Entity·DAO와 계획의 차이는 [현재 구현](android-implementation.md)을 기준으로 확인한다.
+이용 프로필, 세부 일정 개정, 템플릿 고정 키의 보완안은 [공지 수집 상세 설계의 Room 저장 보완](notice-ingestion-design.md#room-저장-보완)에 정의했다. 현재 Android DB는 버전 2이며, 초기화 미설정은 `dailyResetMinute=NULL`로 저장한다. 1→2 업그레이드에서 기록을 보존한다. 실제 Entity·DAO와 계획의 차이는 [현재 구현](android-implementation.md)을 기준으로 확인한다.
 
 [README로 돌아가기](../README.md)

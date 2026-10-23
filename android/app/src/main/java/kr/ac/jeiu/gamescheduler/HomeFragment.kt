@@ -31,6 +31,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.events.layoutManager = LinearLayoutManager(requireContext())
         binding.events.adapter = adapter
         binding.refresh.setOnClickListener { model.refresh() }
+        binding.dailyTasks.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.container, DailyFragment()).addToBackStack("daily").commit()
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 model.state.collect { state ->

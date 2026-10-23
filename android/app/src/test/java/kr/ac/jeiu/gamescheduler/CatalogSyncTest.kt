@@ -93,6 +93,7 @@ class CatalogSyncTest {
 
     @Test fun metadataUpdateAndRepeatedImportPreserveEventAndDailyCompletion() = runBlocking {
         repository.refresh()
+        db.dao().setResetMinute(PROFILE, 240)
         repository.setChecked(EVENT, "goal", true)
         val originalRecord = db.dao().checkRecord(EVENT, "goal")
         val dailyRecord = DailyTaskRecordEntity(DAILY, "daily-mission", 1_792_800_000_000, CLOCK.millis())
@@ -107,6 +108,7 @@ class CatalogSyncTest {
         assertEquals(Instant.parse("2026-11-06T20:00:00Z").toEpochMilli(), db.dao().event(EVENT)!!.endAt)
         assertEquals(originalRecord, db.dao().checkRecord(EVENT, "goal"))
         assertEquals(listOf(dailyRecord), db.dao().dailyRecords())
+        assertEquals(240, db.dao().game(PROFILE)!!.dailyResetMinute)
         assertEquals("수정된 확인 항목", db.dao().check(EVENT, "goal")!!.title)
         assertTrue(repository.refresh().unchanged)
         assertEquals(originalRecord, db.dao().checkRecord(EVENT, "goal"))

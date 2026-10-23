@@ -69,7 +69,7 @@ class EventAdapter(private val onCheck: (String, String, Boolean) -> Unit, priva
                 })
             }
             daily.text = details.dailyTasks.joinToString("\n") {
-                "일일 확인: ${it.title}" + if (it.missingFromLatest) " · 이전 템플릿" else " · 기간·초기화 확인 후 사용"
+                "일일 확인: ${it.title}" + if (it.missingFromLatest) " · 이전 템플릿" else " · 일일 숙제 화면에서 체크"
             }
             daily.isVisible = details.dailyTasks.isNotEmpty()
             source.setOnClickListener { onSource(event.sourceUrl) }

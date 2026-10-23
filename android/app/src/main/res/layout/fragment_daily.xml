@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:background="#F4F6FA" android:padding="16dp"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <Button android:id="@+id/back" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="일정으로 돌아가기" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="일일 숙제" android:textSize="26sp" android:textStyle="bold" android:textColor="#18243B" />
+    <TextView android:id="@+id/settings" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/setReset" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="초기화 시각 설정" />
+        <Button android:id="@+id/clearReset" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="설정 해제" />
+    </LinearLayout>
+    <TextView android:id="@+id/cycle" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
+    <Button android:id="@+id/history" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="완료 기록 보기" />
+    <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityLiveRegion="polite" android:paddingBottom="8dp" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/tasks" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+</LinearLayout>

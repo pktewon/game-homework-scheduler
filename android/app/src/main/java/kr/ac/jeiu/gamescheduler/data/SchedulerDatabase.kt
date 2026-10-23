@@ -1,6 +1,8 @@
 package kr.ac.jeiu.gamescheduler.data
 
 import androidx.room.*
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "games")
@@ -60,7 +62,21 @@ data class DailyTaskEntity(
     entity = DailyTaskEntity::class, parentColumns = ["eventKey", "sourceTaskKey"],
     childColumns = ["eventKey", "sourceTaskKey"], onDelete = ForeignKey.RESTRICT,
 )])
-data class DailyTaskRecordEntity(val eventKey: String, val sourceTaskKey: String, val cycleStartAt: Long, val completedAt: Long)
+data class DailyTaskRecordEntity(
+    val eventKey: String, val sourceTaskKey: String, val cycleStartAt: Long, val completedAt: Long,
+    val resetMinuteAtCompletion: Int? = null,
+    @ColumnInfo(defaultValue = "0") val periodConfirmedByUser: Boolean = false,
+)
+
+data class DailyTaskDetails(
+    @Embedded val task: DailyTaskEntity,
+    @Relation(parentColumn = "eventKey", entityColumn = "sourceKey") val event: EventEntity,
+)
+
+data class DailyHistoryRow(
+    @Embedded val record: DailyTaskRecordEntity,
+    val taskTitle: String, val eventTitle: String,
+)
 
 @Entity(tableName = "sync_state", foreignKeys = [ForeignKey(
     entity = GameEntity::class, parentColumns = ["profileKey"], childColumns = ["profileKey"], onDelete = ForeignKey.RESTRICT,
@@ -92,6 +108,23 @@ interface SchedulerDao {
     @Upsert suspend fun putTask(task: DailyTaskEntity)
     @Upsert suspend fun putCheckRecord(record: CheckRecordEntity)
     @Upsert suspend fun putDailyRecord(record: DailyTaskRecordEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun completeDailyOnce(record: DailyTaskRecordEntity): Long
+    @Query("SELECT * FROM games WHERE profileKey = :profile") suspend fun game(profile: String): GameEntity?
+    @Query("SELECT * FROM games WHERE profileKey = :profile") fun observeGame(profile: String): Flow<GameEntity?>
+    @Query("UPDATE games SET dailyResetMinute = :minute WHERE profileKey = :profile") suspend fun setResetMinute(profile: String, minute: Int?)
+    @Query("SELECT * FROM daily_tasks WHERE eventKey = :eventKey AND sourceTaskKey = :taskKey")
+    suspend fun task(eventKey: String, taskKey: String): DailyTaskEntity?
+    @Query("SELECT * FROM daily_task_records WHERE eventKey = :eventKey AND sourceTaskKey = :taskKey AND cycleStartAt = :cycle")
+    suspend fun dailyRecord(eventKey: String, taskKey: String, cycle: Long): DailyTaskRecordEntity?
+    @Query("DELETE FROM daily_task_records WHERE eventKey = :eventKey AND sourceTaskKey = :taskKey AND cycleStartAt = :cycle")
+    suspend fun uncheckDaily(eventKey: String, taskKey: String, cycle: Long)
+    @Transaction @Query("SELECT * FROM daily_tasks WHERE eventKey IN (SELECT sourceKey FROM events WHERE profileKey = :profile)")
+    fun observeDailyTasks(profile: String): Flow<List<DailyTaskDetails>>
+    @Query("""SELECT r.*, t.title AS taskTitle, e.title AS eventTitle FROM daily_task_records r
+        JOIN daily_tasks t ON r.eventKey = t.eventKey AND r.sourceTaskKey = t.sourceTaskKey
+        JOIN events e ON e.sourceKey = r.eventKey WHERE e.profileKey = :profile
+        ORDER BY r.cycleStartAt DESC, r.completedAt DESC, r.eventKey, r.sourceTaskKey""")
+    fun observeDailyHistory(profile: String): Flow<List<DailyHistoryRow>>
     @Upsert suspend fun putSyncState(state: SyncStateEntity)
     @Query("SELECT * FROM sync_state WHERE profileKey = :profile") suspend fun syncState(profile: String): SyncStateEntity?
     @Query("SELECT * FROM sync_state WHERE profileKey = :profile") fun observeSyncState(profile: String): Flow<SyncStateEntity?>
@@ -114,5 +147,15 @@ interface SchedulerDao {
 
 @Database(entities = [GameEntity::class, EventEntity::class, CheckTemplateEntity::class,
     CheckRecordEntity::class, DailyTaskEntity::class, DailyTaskRecordEntity::class, SyncStateEntity::class],
-    views = [CheckRow::class], version = 1, exportSchema = true)
-abstract class SchedulerDatabase : RoomDatabase() { abstract fun dao(): SchedulerDao }
+    views = [CheckRow::class], version = 2, exportSchema = true)
+abstract class SchedulerDatabase : RoomDatabase() {
+    abstract fun dao(): SchedulerDao
+    companion object {
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE daily_task_records ADD COLUMN resetMinuteAtCompletion INTEGER")
+                db.execSQL("ALTER TABLE daily_task_records ADD COLUMN periodConfirmedByUser INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+    }
+}

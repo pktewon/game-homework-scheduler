@@ -1,0 +1,10 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:orientation="vertical" android:padding="20dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Spinner android:id="@+id/preset" android:layout_width="match_parent" android:layout_height="48dp" android:contentDescription="게임 이름 예시 선택" />
+        <EditText android:id="@+id/name" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="게임 이름" android:inputType="textCapSentences" android:maxLength="60" />
+        <EditText android:id="@+id/server" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="서버·지역 (예: Asia, HAOPLAY 한국판)" android:inputType="text" android:maxLength="80" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="초기화 시각을 입력할 시간 기준" />
+        <Spinner android:id="@+id/offset" android:layout_width="match_parent" android:layout_height="48dp" android:contentDescription="시간 기준 선택" />
+        <TextView android:id="@+id/help" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="한국 시각으로 입력하려면 UTC+9를 선택하세요. 초기화 시각은 일일 숙제 화면에서 설정합니다. 변경해도 이전 완료 기록은 유지됩니다." />
+    </LinearLayout>
+</ScrollView>

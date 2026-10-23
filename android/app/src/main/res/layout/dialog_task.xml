@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
+    android:padding="20dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <EditText android:id="@+id/title" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="숙제 이름" android:inputType="textCapSentences" android:maxLength="100" />
+    <EditText android:id="@+id/notes" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="설명 (선택)" android:inputType="textMultiLine" android:maxLength="1000" />
+    <CheckBox android:id="@+id/enabled" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="이 숙제 사용" android:checked="true" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="이름·설명을 바꾸거나 사용을 중지해도 이전 완료 기록은 남습니다." />
+</LinearLayout>

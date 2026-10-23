@@ -36,17 +36,20 @@ fun dailyAvailability(task: DailyTaskEntity, event: EventEntity, configured: Boo
     else -> DailyAvailability.INVALID
 }
 
-class DailyRepository(private val db: SchedulerDatabase, private val clock: Clock = Clock.systemUTC()) {
+class DailyRepository(private val db: SchedulerDatabase, private val clock: Clock = Clock.systemUTC(), private val profileKey: String = PROFILE) {
     private val dao = db.dao()
-    val game = dao.observeGame(PROFILE)
-    val tasks = dao.observeDailyTasks(PROFILE)
-    val history = dao.observeDailyHistory(PROFILE)
+    val game = dao.observeGame(profileKey)
+    val tasks = dao.observeDailyTasks(profileKey)
+    val history = dao.observeDailyHistory(profileKey)
+    val personalTasks = dao.observePersonalTasks(profileKey)
+    val personalHistory = dao.observePersonalHistory(profileKey)
 
     suspend fun setResetMinute(minute: Int?) {
         demand(minute == null || minute in 0..1439, "초기화 시각은 00:00~23:59 사이로 설정해 주세요.")
         db.withTransaction {
-            dao.ensureGame(GameEntity(PROFILE))
-            dao.setResetMinute(PROFILE, minute)
+            if (profileKey == PROFILE) dao.ensureGame(GameEntity(PROFILE))
+            demand(dao.game(profileKey) != null, "게임을 먼저 등록해 주세요.")
+            dao.setResetMinute(profileKey, minute)
             // Changing settings never moves or deletes previous cycle records.
         }
     }
@@ -54,14 +57,14 @@ class DailyRepository(private val db: SchedulerDatabase, private val clock: Cloc
     suspend fun setChecked(eventKey: String, taskKey: String, expectedCycle: DailyCycle,
                            checked: Boolean, confirmUnknownPeriod: Boolean = false) {
         db.withTransaction {
-            val game = dao.game(PROFILE) ?: throw CatalogException("초기화 시각을 설정해 주세요.")
+            val game = dao.game(profileKey) ?: throw CatalogException("초기화 시각을 설정해 주세요.")
             val reset = game.dailyResetMinute ?: throw CatalogException("초기화 시각을 설정해 주세요.")
             val now = clock.millis()
             val current = DailyCycles.current(now, reset, game.serverUtcOffset)
             demand(expectedCycle == current, "회차 또는 초기화 설정이 바뀌었습니다. 새 회차에서 다시 체크해 주세요.")
             val event = dao.event(eventKey) ?: throw CatalogException("일정이 없습니다.")
             val task = dao.task(eventKey, taskKey) ?: throw CatalogException("숙제가 없습니다.")
-            demand(event.profileKey == PROFILE, "이용 서버가 다른 숙제입니다.")
+            demand(event.profileKey == profileKey, "이용 서버가 다른 숙제입니다.")
             if (!checked) {
                 // A user may correct this cycle even after the event ended. History is read-only.
                 dao.uncheckDaily(eventKey, taskKey, current.startAt)
@@ -72,6 +75,21 @@ class DailyRepository(private val db: SchedulerDatabase, private val clock: Cloc
                 (availability == DailyAvailability.NEEDS_PERIOD_CONFIRMATION && confirmUnknownPeriod), availability.label)
             dao.completeDailyOnce(DailyTaskRecordEntity(eventKey, taskKey, current.startAt, now, reset,
                 availability == DailyAvailability.NEEDS_PERIOD_CONFIRMATION))
+        }
+    }
+
+    suspend fun setPersonalChecked(taskId: String, expectedCycle: DailyCycle, checked: Boolean) {
+        db.withTransaction {
+            val game = dao.game(profileKey) ?: throw CatalogException("게임이 없습니다.")
+            val minute = game.dailyResetMinute ?: throw CatalogException("초기화 시각을 설정해 주세요.")
+            val now = clock.millis()
+            val cycle = DailyCycles.current(now, minute, game.serverUtcOffset)
+            demand(cycle == expectedCycle, "회차 또는 초기화 설정이 바뀌었습니다. 새 회차에서 다시 체크해 주세요.")
+            val task = dao.personalTask(taskId) ?: throw CatalogException("숙제가 없습니다.")
+            demand(task.profileKey == profileKey, "다른 게임의 숙제입니다.")
+            if (!checked) { dao.uncheckPersonal(taskId, cycle.startAt); return@withTransaction }
+            demand(task.enabled, "사용을 중지한 숙제입니다.")
+            dao.completePersonalOnce(PersonalRecordEntity(taskId, cycle.startAt, now, minute, game.serverUtcOffset))
         }
     }
 }

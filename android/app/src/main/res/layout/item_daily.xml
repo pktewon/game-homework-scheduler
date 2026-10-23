@@ -4,4 +4,5 @@
     <TextView android:id="@+id/eventTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="#18243B" />
     <TextView android:id="@+id/info" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
     <CheckBox android:id="@+id/check" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" />
+    <Button android:id="@+id/edit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="숙제 수정" />
 </LinearLayout>

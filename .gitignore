@@ -31,3 +31,8 @@ __pycache__/
 *.py[cod]
 .collector-cache/
 .collector-test-*/
+
+# School submissions are kept locally outside the public source package
+docs/planning/
+school-submission/
+학교제출용/

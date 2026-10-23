@@ -25,7 +25,7 @@ private const val EVENT = "$PROFILE:endfield-9560-event-0004:play"
 private const val DAILY = "$PROFILE:endfield-9560-event-0005:play"
 private val CLOCK = Clock.fixed(Instant.parse("2026-10-23T12:00:00Z"), ZoneOffset.UTC)
 
-private class TestFeed : CatalogTransport {
+internal class TestFeed : CatalogTransport {
     private val loader = javaClass.classLoader!!
     private val original = loader.getResourceAsStream("endfield-asia.json")!!.readBytes()
     var payload = original

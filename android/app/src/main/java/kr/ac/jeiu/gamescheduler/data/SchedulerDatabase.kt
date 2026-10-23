@@ -11,7 +11,28 @@ data class GameEntity(
     val name: String = "명일방주: 엔드필드",
     val serverUtcOffset: String = "+08:00",
     val dailyResetMinute: Int? = null,
+    @ColumnInfo(defaultValue = "'Asia'") val serverLabel: String = "Asia",
+    @ColumnInfo(defaultValue = "0") val isUserCreated: Boolean = false,
 )
+
+// Personal routines have no foreign key to imported events or template identities.
+@Entity(tableName = "personal_daily_tasks", foreignKeys = [ForeignKey(
+    entity = GameEntity::class, parentColumns = ["profileKey"], childColumns = ["profileKey"], onDelete = ForeignKey.RESTRICT,
+)], indices = [Index("profileKey")])
+data class PersonalTaskEntity(
+    @PrimaryKey val taskId: String, val profileKey: String, val title: String,
+    val notes: String = "", val enabled: Boolean = true,
+)
+
+@Entity(tableName = "personal_daily_records", primaryKeys = ["taskId", "cycleStartAt"], foreignKeys = [ForeignKey(
+    entity = PersonalTaskEntity::class, parentColumns = ["taskId"], childColumns = ["taskId"], onDelete = ForeignKey.RESTRICT,
+)])
+data class PersonalRecordEntity(
+    val taskId: String, val cycleStartAt: Long, val completedAt: Long,
+    val resetMinuteAtCompletion: Int, val serverUtcOffsetAtCompletion: String,
+)
+
+data class PersonalHistoryRow(@Embedded val record: PersonalRecordEntity, val taskTitle: String)
 
 @Entity(tableName = "events", foreignKeys = [ForeignKey(
     entity = GameEntity::class, parentColumns = ["profileKey"], childColumns = ["profileKey"], onDelete = ForeignKey.RESTRICT,
@@ -103,6 +124,22 @@ data class EventDetails(
 @Dao
 interface SchedulerDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun ensureGame(game: GameEntity): Long
+    @Query("SELECT * FROM games ORDER BY isUserCreated, name, profileKey") fun observeGames(): Flow<List<GameEntity>>
+    @Query("UPDATE games SET name = :name, serverLabel = :server, serverUtcOffset = :offset WHERE profileKey = :profile")
+    suspend fun editGame(profile: String, name: String, server: String, offset: String)
+    @Insert suspend fun createPersonalTask(task: PersonalTaskEntity)
+    @Query("SELECT * FROM personal_daily_tasks WHERE taskId = :id") suspend fun personalTask(id: String): PersonalTaskEntity?
+    @Query("UPDATE personal_daily_tasks SET title = :title, notes = :notes, enabled = :enabled WHERE taskId = :id")
+    suspend fun editPersonalTask(id: String, title: String, notes: String, enabled: Boolean)
+    @Query("SELECT * FROM personal_daily_tasks WHERE profileKey = :profile ORDER BY title, taskId")
+    fun observePersonalTasks(profile: String): Flow<List<PersonalTaskEntity>>
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun completePersonalOnce(record: PersonalRecordEntity): Long
+    @Query("DELETE FROM personal_daily_records WHERE taskId = :id AND cycleStartAt = :cycle")
+    suspend fun uncheckPersonal(id: String, cycle: Long)
+    @Query("""SELECT r.*, t.title AS taskTitle FROM personal_daily_records r
+        JOIN personal_daily_tasks t ON t.taskId = r.taskId WHERE t.profileKey = :profile
+        ORDER BY r.cycleStartAt DESC, r.completedAt DESC, r.taskId""")
+    fun observePersonalHistory(profile: String): Flow<List<PersonalHistoryRow>>
     @Upsert suspend fun putEvent(event: EventEntity)
     @Upsert suspend fun putCheck(template: CheckTemplateEntity)
     @Upsert suspend fun putTask(task: DailyTaskEntity)
@@ -146,8 +183,9 @@ interface SchedulerDao {
 }
 
 @Database(entities = [GameEntity::class, EventEntity::class, CheckTemplateEntity::class,
-    CheckRecordEntity::class, DailyTaskEntity::class, DailyTaskRecordEntity::class, SyncStateEntity::class],
-    views = [CheckRow::class], version = 2, exportSchema = true)
+    CheckRecordEntity::class, DailyTaskEntity::class, DailyTaskRecordEntity::class, SyncStateEntity::class,
+    PersonalTaskEntity::class, PersonalRecordEntity::class],
+    views = [CheckRow::class], version = 3, exportSchema = true)
 abstract class SchedulerDatabase : RoomDatabase() {
     abstract fun dao(): SchedulerDao
     companion object {
@@ -155,6 +193,22 @@ abstract class SchedulerDatabase : RoomDatabase() {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE daily_task_records ADD COLUMN resetMinuteAtCompletion INTEGER")
                 db.execSQL("ALTER TABLE daily_task_records ADD COLUMN periodConfirmedByUser INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE games ADD COLUMN serverLabel TEXT NOT NULL DEFAULT 'Asia'")
+                db.execSQL("ALTER TABLE games ADD COLUMN isUserCreated INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("""CREATE TABLE IF NOT EXISTS personal_daily_tasks (
+                    taskId TEXT NOT NULL, profileKey TEXT NOT NULL, title TEXT NOT NULL,
+                    notes TEXT NOT NULL, enabled INTEGER NOT NULL, PRIMARY KEY(taskId),
+                    FOREIGN KEY(profileKey) REFERENCES games(profileKey) ON UPDATE NO ACTION ON DELETE RESTRICT)""")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_personal_daily_tasks_profileKey ON personal_daily_tasks(profileKey)")
+                db.execSQL("""CREATE TABLE IF NOT EXISTS personal_daily_records (
+                    taskId TEXT NOT NULL, cycleStartAt INTEGER NOT NULL, completedAt INTEGER NOT NULL,
+                    resetMinuteAtCompletion INTEGER NOT NULL, serverUtcOffsetAtCompletion TEXT NOT NULL,
+                    PRIMARY KEY(taskId, cycleStartAt), FOREIGN KEY(taskId) REFERENCES personal_daily_tasks(taskId)
+                    ON UPDATE NO ACTION ON DELETE RESTRICT)""")
             }
         }
     }

@@ -7,6 +7,7 @@
         android:text="엔드필드 · Asia 서버\n일정은 공지에서, 완료는 내가 체크" android:paddingTop="6dp" />
     <Button android:id="@+id/refresh" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="공식 일정 새로고침" />
     <Button android:id="@+id/dailyTasks" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="일일 숙제 · 초기화 설정 · 완료 기록" />
+    <Button android:id="@+id/manageGames" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="내 게임 · 게임과 숙제 등록" />
     <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:accessibilityLiveRegion="polite" android:paddingBottom="8dp" />
     <androidx.recyclerview.widget.RecyclerView android:id="@+id/events" android:layout_width="match_parent"

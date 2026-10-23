@@ -20,7 +20,7 @@ Android **8.0 이상**에서 사용할 수 있는 테스트용 APK입니다. Git
 
 마감 알림은 홈의 **마감 알림 설정**에서 알림 권한을 허용하고, 전체·참여·교환 알림을 켠 뒤 **알림 설정 저장**을 눌러 사용합니다. 게임 실행과 완료 체크는 분리되어 있으며 완료 여부는 직접 체크합니다.
 
-[현재 화면과 사용 안내](docs/home-and-detail.md)
+[현재 화면과 사용 안내](docs/home-and-detail.md) · [실제 휴대폰 테스트 체크리스트·결과 기록](docs/phone-test-checklist.md)
 
 | 항목 | 내용 |
 | --- | --- |
@@ -48,6 +48,7 @@ Android **8.0 이상**에서 사용할 수 있는 테스트용 APK입니다. Git
 
 ## 설계·개발 문서
 
+- [실제 휴대폰 테스트 체크리스트·결과 기록](docs/phone-test-checklist.md)
 - [현재 홈 요약·상태 필터·이벤트 상세 화면](docs/home-and-detail.md)
 - [7개 화면과 화면 이동 설계](docs/screen-design.md)
 - [Room 데이터베이스 설계](docs/database-design.md)

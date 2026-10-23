@@ -2,7 +2,7 @@
 
 김태준 · 2026626007 · 게임 숙제 스케줄러
 
-DB 이름은 `game_scheduler_database`이다. 기본 구현은 6개 테이블이며, 일정 자동 갱신에 필요한 `event_sources`는 확장 테이블로 분리한다. 이 문서는 구현 전 논리 설계이며 Room Entity와 DAO 소스는 기말 개발에서 작성한다.
+DB 이름은 `game_scheduler_database`이다. 이 문서는 중간고사 시점의 6개 기본 테이블 논리 설계다. 이후 JSON 수신 기능을 구현하면서 완료 기록을 별도 테이블로 분리했다. 현재 구현의 7개 테이블·PK·보존 규칙과 내보낸 실제 스키마는 [Android 구현 문서](android-implementation.md)에 있다. 메모와 일일 회차 UI 등은 아직 후속 구현이다.
 
 ![데이터베이스 관계도](design/database-relations.png)
 
@@ -158,6 +158,6 @@ DB 이름은 `game_scheduler_database`이다. 기본 구현은 6개 테이블이
 
 ## 자동 수신에 필요한 보완 설계
 
-중간고사 기획서의 6개 기본 테이블 관계는 유지한다. 이용 프로필, 세부 일정 개정, 템플릿의 고정 키를 위한 추가 컬럼과 UNIQUE 제약은 [공지 수집 상세 설계의 Room 저장 보완](notice-ingestion-design.md#room-저장-보완)에 정의했다. 아직 Entity 코드나 마이그레이션을 구현한 상태는 아니며, 구현할 때 이 상세 설계와 함께 적용한다.
+이용 프로필, 세부 일정 개정, 템플릿 고정 키의 보완안은 [공지 수집 상세 설계의 Room 저장 보완](notice-ingestion-design.md#room-저장-보완)에 정의했다. 첫 Android DB는 스키마 버전 1이며, 초기화 미확정은 `dailyResetMinute=NULL`로 저장한다. 실제 Entity·DAO와 계획의 차이는 [현재 구현](android-implementation.md)을 기준으로 확인한다.
 
 [README로 돌아가기](../README.md)

@@ -5,6 +5,11 @@
 *.xml text eol=lf
 *.py text eol=lf
 *.json text eol=lf
+*.bat text eol=lf
+*.properties text eol=lf
+.gitattributes text eol=lf
+gradlew text eol=lf
+*.jar binary
 *.png binary
 *.pdf binary
 *.docx binary

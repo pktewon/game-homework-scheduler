@@ -11,7 +11,7 @@
 | 대상 플랫폼 | Android |
 | 저장소 | [pktewon/game-homework-scheduler](https://github.com/pktewon/game-homework-scheduler) |
 | 공개 범위 | 공개 — 로그인 없이 기획·설계 자료 열람 가능 |
-| 현재 단계 | 기획·설계, 엔필 수집·검수·JSON 배포 구현, Android 앱 구현 예정 |
+| 현재 단계 | 엔필 수집·검수·배포 및 Android JSON 수신·Room 저장·참여 체크 첫 구현 |
 | 관리 대상 예시 | 명조, 명일방주 엔드필드, 소녀전선 2 |
 
 ## 기획 의도와 문제인식
@@ -41,6 +41,7 @@
 - [엔필 수집기 실행 방법과 실제 수집 범위](docs/endfield-collector.md)
 - [공식 공지에서 생성한 엔필 일정 JSON — 검수 후보](data/endfield-asia.candidate.json)
 - [엔필 검수 결과·배포 주소·Android 가져오기 계약](docs/endfield-release.md)
+- [Android Studio 실행 방법과 현재 구현·검증 결과](docs/android-implementation.md)
 - [앱용 JSON 매니페스트](https://raw.githubusercontent.com/pktewon/game-homework-scheduler/main/data/manifest.json)
 - [기말 개발 일정과 점검표](docs/development-plan.md)
 
@@ -58,7 +59,15 @@ python -m collector.publish
 
 2026-10-23에 공식 「단청도」 공지를 직접 수집·대조해 이벤트 묶음 11개, 기간 일정 12개, 콘텐츠 업데이트 시점 3개, 일일 확인 숙제 4개를 검수했습니다. 기간 중 6개는 양끝 확정, 6개는 확인 필요입니다. 콘텐츠 업데이트를 참여 기간으로 해석하던 부분을 수정했으며 테스트 27개가 통과했습니다.
 
-공지 URL 한 건의 ‘신규 이벤트’ 구간을 읽는 CLI입니다. 수집 후보는 계속 `CANDIDATE`, `autoImportAllowed=false`이며 검수 기록·원문 재대조를 통과한 별도 [배포 JSON](https://raw.githubusercontent.com/pktewon/game-homework-scheduler/main/data/endfield-asia.json)은 `PUBLISHED`입니다. 불명확한 시각은 NULL·`NEEDS_REVIEW`로 유지합니다. 매니페스트에 버전별 주소·SHA-256·바이트 수를 제공하며 Android 수신·Room 병합은 이후 구현합니다. [검수 결과와 적용 계약](docs/endfield-release.md)에서 범위와 제한을 확인할 수 있습니다.
+공지 URL 한 건의 ‘신규 이벤트’ 구간을 읽는 CLI입니다. 수집 후보는 계속 `CANDIDATE`, `autoImportAllowed=false`이며 검수 기록·원문 재대조를 통과한 별도 [배포 JSON](https://raw.githubusercontent.com/pktewon/game-homework-scheduler/main/data/endfield-asia.json)은 `PUBLISHED`입니다. 불명확한 시각은 NULL·`NEEDS_REVIEW`로 유지합니다. 매니페스트에 버전별 주소·SHA-256·바이트 수를 제공합니다. [검수 결과와 적용 계약](docs/endfield-release.md)에서 범위와 제한을 확인할 수 있습니다.
+
+## Android 앱 실행
+
+Android Studio에서 이 저장소의 **`android` 폴더**를 열고 Gradle Sync 후 `app`을 실행합니다. 최소 Android 8.0(API 26)입니다. [설정·명령·실제 화면](docs/android-implementation.md)에 환경과 확인 방법을 정리했습니다.
+
+앱 진입과 새로고침 때 배포 JSON을 검증해 Room에 저장합니다. 진행 중인 미완료 일정이 먼저 보이며 불명확한 기간은 **확인 필요**로 표시합니다. 참여·보상을 직접 체크하고, 공지 갱신은 별도 개인 완료 테이블을 변경하지 않습니다. 사라진 일정과 템플릿도 기록과 함께 보관합니다.
+
+디버그 APK 빌드, Room 테스트 **12개**, Lint 오류 0건을 확인했습니다. API 35 에뮬레이터에서 실제 JSON 수신과 체크 후 새로고침·앱 재실행 시 기록 유지를 확인했습니다. 일일 숙제는 템플릿 표시까지만 구현했으며 회차 생성은 초기화 시각 확인 기능과 함께 추가할 예정입니다.
 
 ## 핵심 기능
 
@@ -157,12 +166,13 @@ python -m collector.publish
 - [x] 세 게임의 이용 서버 확정 및 공지 수집·자동 등록 상세 설계
 - [x] 엔필 공식 공지 실제 수집, 원문 대조·배포 JSON 생성 및 테스트 27개 통과
 - [ ] 수업 제출 시스템에 최종 PDF와 저장소 주소 제출
-- [ ] Android 앱 코드 구현과 실제 기기 검증
+- [x] Android 첫 화면·JSON 수신·Room 저장·참여 체크 및 에뮬레이터 검증
+- [ ] 나머지 화면·일일 회차 체크·메모·알림 및 실제 휴대폰 검증
 - [ ] 최종 APK와 시연 자료 준비
 
 ## 현재 확인 방법
 
-기획·설계 문서와 화면 시안, Python 엔필 수집기 및 실제 수집 JSON이 들어 있습니다. 문서는 README와 제출 PDF로, 수집기는 위 실행 명령으로 확인할 수 있습니다. Android 소스 코드, Gradle 프로젝트와 APK는 아직 포함되어 있지 않습니다.
+기획·설계 문서, Python 수집·검수·배포 코드와 Android 첫 구현이 들어 있습니다. Android Studio에서는 `android`를 열어 실행합니다. APK는 직접 빌드할 수 있으며 생성된 빌드 파일은 저장소에서 제외합니다. 제출 PDF는 중간고사 기획 시점의 문서입니다.
 
 ## 저장소 구성
 
@@ -173,6 +183,7 @@ game-homework-scheduler/
 ├── .gitattributes
 ├── collector/                       # 엔필 공식 공지 수집기와 고정 키 등록부
 ├── tests/                           # 네트워크 없는 단위 테스트
+├── android/                         # Android Studio에서 여는 Gradle 프로젝트
 ├── data/endfield-asia.candidate.json # 실제 공지 추출, 검수 후보
 ├── data/endfield-asia.json           # 검수한 앱용 피드
 ├── data/manifest.json               # 버전별 URL·SHA-256·바이트 수

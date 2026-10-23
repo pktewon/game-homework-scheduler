@@ -3,6 +3,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
     <application android:name=".SchedulerApp" android:allowBackup="false"
         android:label="게임 숙제 스케줄러" android:supportsRtl="true"
         android:usesCleartextTraffic="false" android:theme="@style/AppTheme">

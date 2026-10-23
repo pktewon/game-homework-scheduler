@@ -13,6 +13,8 @@ data class GameEntity(
     val dailyResetMinute: Int? = null,
     @ColumnInfo(defaultValue = "'Asia'") val serverLabel: String = "Asia",
     @ColumnInfo(defaultValue = "0") val isUserCreated: Boolean = false,
+    @ColumnInfo(defaultValue = "NULL") val appPackageName: String? = null,
+    @ColumnInfo(defaultValue = "NULL") val appLabel: String? = null,
 )
 
 // Personal routines have no foreign key to imported events or template identities.
@@ -147,6 +149,8 @@ data class MemoRow(@Embedded val memo: MemoEntity, val eventTitle: String?, val 
 
 @Dao
 interface SchedulerDao {
+    @Query("UPDATE games SET appPackageName = :packageName, appLabel = :label WHERE profileKey = :profile")
+    suspend fun setGameApp(profile: String, packageName: String?, label: String?)
     @Query("SELECT * FROM memos WHERE memoId = :id") suspend fun memo(id: String): MemoEntity?
     @Upsert suspend fun putMemo(memo: MemoEntity)
     @Query("""SELECT m.*, e.title AS eventTitle, e.missingFromLatest AS eventMissing, e.timeState AS eventTimeState
@@ -225,7 +229,7 @@ interface SchedulerDao {
 @Database(entities = [GameEntity::class, EventEntity::class, CheckTemplateEntity::class,
     CheckRecordEntity::class, DailyTaskEntity::class, DailyTaskRecordEntity::class, SyncStateEntity::class,
     PersonalTaskEntity::class, PersonalRecordEntity::class, DeadlineSettingsEntity::class, DeadlineReceiptEntity::class, MemoEntity::class],
-    views = [CheckRow::class], version = 6, exportSchema = true)
+    views = [CheckRow::class], version = 7, exportSchema = true)
 abstract class SchedulerDatabase : RoomDatabase() {
     abstract fun dao(): SchedulerDao
     companion object {
@@ -277,6 +281,12 @@ abstract class SchedulerDatabase : RoomDatabase() {
                     FOREIGN KEY(eventKey) REFERENCES events(sourceKey) ON UPDATE NO ACTION ON DELETE RESTRICT)""")
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_memos_profileKey ON memos(profileKey)")
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_memos_eventKey ON memos(eventKey)")
+            }
+        }
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE games ADD COLUMN appPackageName TEXT DEFAULT NULL")
+                db.execSQL("ALTER TABLE games ADD COLUMN appLabel TEXT DEFAULT NULL")
             }
         }
     }

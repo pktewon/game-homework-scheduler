@@ -3,6 +3,11 @@
     android:layout_width="match_parent" android:layout_height="wrap_content">
     <TextView android:id="@+id/title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="20sp" android:textStyle="bold" />
     <TextView android:id="@+id/info" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
+    <TextView android:id="@+id/appLinkInfo" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="6dp" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/launchGame" android:text="게임 실행" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+        <Button android:id="@+id/linkApp" android:text="실행 앱 연결" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+    </LinearLayout>
     <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
         <Button android:id="@+id/openDaily" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="숙제 · 기록" />
         <Button android:id="@+id/openEvents" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="이벤트" />

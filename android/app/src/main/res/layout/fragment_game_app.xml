@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="16dp" android:background="#F4F6FA" android:layout_width="match_parent" android:layout_height="match_parent">
+    <Button android:id="@+id/back" android:text="돌아가기" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/heading" android:textSize="24sp" android:textStyle="bold" android:textColor="#18243B" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:text="휴대폰에 설치된 게임 앱을 선택하세요. 연결은 이 기기에 저장됩니다. 앱을 실행해도 숙제·이벤트는 완료로 바뀌지 않습니다." android:paddingTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/current" android:textStyle="bold" android:paddingTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/refresh" android:text="설치 앱 다시 확인" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+        <Button android:id="@+id/disconnect" android:text="연결 해제" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+    </LinearLayout>
+    <EditText android:id="@+id/search" android:hint="앱 이름 또는 패키지명 검색" android:inputType="text" android:maxLength="255" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/status" android:accessibilityLiveRegion="polite" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/empty" android:text="선택할 앱이 없습니다. 게임을 이 기기에 설치한 뒤 다시 확인하거나 검색어를 지워 보세요." android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/apps" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+</LinearLayout>

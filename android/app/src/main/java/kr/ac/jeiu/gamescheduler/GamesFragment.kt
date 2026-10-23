@@ -40,7 +40,7 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
             parentFragmentManager.beginTransaction().replace(R.id.container, events).addToBackStack("game-events").commit()
         }, onMemos = { game ->
             parentFragmentManager.beginTransaction().replace(R.id.container, MemoBoardFragment.create(game.profileKey)).addToBackStack("game-memos").commit()
-        })
+        }, onLink = ::linkApp, onLaunch = ::launchGame)
         binding.games.layoutManager = LinearLayoutManager(requireContext())
         binding.games.adapter = adapter
         binding.back.setOnClickListener { parentFragmentManager.popBackStack() }
@@ -52,6 +52,21 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
                     binding.status.text = state.message
                     adapter.submitList(state.games)
                 }
+            }
+        }
+    }
+    private fun linkApp(game: GameEntity) {
+        parentFragmentManager.beginTransaction().replace(R.id.container, GameAppFragment.create(game.profileKey)).addToBackStack("game-app").commit()
+    }
+    private fun launchGame(game: GameEntity) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val current = (requireActivity().application as SchedulerApp).database.dao().game(game.profileKey) ?: return@launch
+            if (!isAdded) return@launch
+            val result = GameAppLauncher(requireContext()).launch(current.appPackageName)
+            model.reportLaunch(result)
+            if (result != LaunchResult.STARTED) {
+                AlertDialog.Builder(requireContext()).setTitle("게임 실행 안내").setMessage(launchMessage(result))
+                    .setPositiveButton("실행 앱 연결") { _, _ -> linkApp(current) }.setNegativeButton("닫기", null).show()
             }
         }
     }
@@ -97,7 +112,8 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
 }
 
 private class GamesAdapter(private val onOpen: (GameEntity) -> Unit, private val onEdit: (GameEntity) -> Unit,
-                           private val onEvents: (GameEntity) -> Unit, private val onMemos: (GameEntity) -> Unit) :
+                           private val onEvents: (GameEntity) -> Unit, private val onMemos: (GameEntity) -> Unit,
+                           private val onLink: (GameEntity) -> Unit, private val onLaunch: (GameEntity) -> Unit) :
     ListAdapter<GameEntity, GamesAdapter.Holder>(object : DiffUtil.ItemCallback<GameEntity>() {
         override fun areItemsTheSame(a: GameEntity, b: GameEntity) = a.profileKey == b.profileKey
         override fun areContentsTheSame(a: GameEntity, b: GameEntity) = a == b
@@ -108,12 +124,15 @@ private class GamesAdapter(private val onOpen: (GameEntity) -> Unit, private val
         val game = getItem(position)
         with(holder.binding) {
             title.text = game.name
+            appLinkInfo.text = game.appPackageName?.let { "실행 앱: ${game.appLabel ?: it}\n$it" } ?: "실행 앱 미연결"
             info.text = "${game.serverLabel}\n${resetText(game.dailyResetMinute, game.serverUtcOffset)}\n" +
                 if (game.profileKey == PROFILE) "공식 일정 수신 + 직접 등록 이벤트·숙제" else "직접 등록 이벤트·숙제 · 공식 일정 수집은 아직 지원하지 않음"
             openDaily.setOnClickListener { onOpen(game) }
             editGame.setOnClickListener { onEdit(game) }
             openEvents.setOnClickListener { onEvents(game) }
             openMemos.setOnClickListener { onMemos(game) }
+            linkApp.setOnClickListener { onLink(game) }
+            launchGame.setOnClickListener { onLaunch(game) }
         }
     }
 }

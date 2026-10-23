@@ -184,9 +184,9 @@ class MemoTest {
             legacy.execSQL("INSERT INTO deadline_receipts VALUES (?, ?, ?)", arrayOf<Any>("old:play", clock.now + 100000, clock.now))
             legacy.version = 5
         }
-        val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name).addMigrations(SchedulerDatabase.MIGRATION_5_6).build()
+        val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name).addMigrations(SchedulerDatabase.MIGRATION_5_6, SchedulerDatabase.MIGRATION_6_7).build()
         try {
-            assertEquals(6, migrated.openHelper.readableDatabase.version)
+            assertEquals(7, migrated.openHelper.readableDatabase.version)
             assertTrue(migrated.dao().checkRecord("old:play", "goal")!!.isDone)
             assertEquals(240, migrated.dao().game(PROFILE)!!.dailyResetMinute)
             assertTrue(migrated.dao().deadlineSettings()!!.enabled); assertEquals(1, migrated.dao().deadlineReceipts().size)

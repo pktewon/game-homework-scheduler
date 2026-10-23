@@ -183,9 +183,9 @@ class ManualEventsTest {
             legacy.execSQL("INSERT INTO personal_daily_records VALUES (?, ?, ?, ?, ?)", arrayOf<Any>("my-task", 100, clock.millis(), 240, "+08:00"))
             legacy.version = 3
         }
-        val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name).addMigrations(SchedulerDatabase.MIGRATION_3_4, SchedulerDatabase.MIGRATION_4_5, SchedulerDatabase.MIGRATION_5_6).build()
+        val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name).addMigrations(SchedulerDatabase.MIGRATION_3_4, SchedulerDatabase.MIGRATION_4_5, SchedulerDatabase.MIGRATION_5_6, SchedulerDatabase.MIGRATION_6_7).build()
         try {
-            assertEquals(6, migrated.openHelper.readableDatabase.version)
+            assertEquals(7, migrated.openHelper.readableDatabase.version)
             assertFalse(migrated.dao().event(old.sourceKey)!!.isUserCreated)
             assertTrue(migrated.dao().checkRecord(old.sourceKey, "goal")!!.isDone)
             assertEquals(240, migrated.dao().game(PROFILE)!!.dailyResetMinute)

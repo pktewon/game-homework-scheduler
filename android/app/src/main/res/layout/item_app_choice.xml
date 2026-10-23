@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="14dp" android:layout_marginBottom="10dp" android:background="#FFFFFF" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:id="@+id/label" android:textSize="18sp" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/packageName" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <Button android:id="@+id/connectApp" android:text="이 앱 연결" android:layout_width="match_parent" android:layout_height="wrap_content" />
+</LinearLayout>

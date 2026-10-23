@@ -20,6 +20,7 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
         repository.saveGame(id, name, server, offset)
         message.value = "게임을 저장했습니다. 기존 숙제와 완료 기록은 유지합니다."
     }
+    fun reportLaunch(result: LaunchResult) { message.value = launchMessage(result) }
     private fun action(block: suspend () -> Unit) {
         if (busy.value) return
         busy.value = true

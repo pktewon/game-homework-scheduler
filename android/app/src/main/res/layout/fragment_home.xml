@@ -8,6 +8,7 @@
     <Button android:id="@+id/refresh" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="공식 일정 새로고침" />
     <Button android:id="@+id/dailyTasks" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="일일 숙제 · 초기화 설정 · 완료 기록" />
     <Button android:id="@+id/manageGames" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="내 게임 · 이벤트와 숙제 등록" />
+    <Button android:id="@+id/deadlineSettings" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="참여·교환 마감 알림 설정" />
     <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:accessibilityLiveRegion="polite" android:paddingBottom="8dp" />
     <androidx.recyclerview.widget.RecyclerView android:id="@+id/events" android:layout_width="match_parent"

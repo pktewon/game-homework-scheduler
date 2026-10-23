@@ -40,6 +40,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.manageGames.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.container, GamesFragment()).addToBackStack("games").commit()
         }
+        binding.deadlineSettings.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.container, DeadlineSettingsFragment()).addToBackStack("deadline-settings").commit()
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 model.state.collect { state ->

@@ -122,8 +122,28 @@ data class EventDetails(
     @Relation(parentColumn = "sourceKey", entityColumn = "eventKey") val dailyTasks: List<DailyTaskEntity>,
 )
 
+@Entity(tableName = "deadline_settings")
+data class DeadlineSettingsEntity(
+    @PrimaryKey val id: Int = 1, val enabled: Boolean = false,
+    val playEnabled: Boolean = true, val playLeadMinutes: Int = 1440,
+    val shopEnabled: Boolean = true, val shopLeadMinutes: Int = 180,
+)
+
+// One delivery per phase and actual deadline, independent of metadata or lead-time edits.
+@Entity(tableName = "deadline_receipts", primaryKeys = ["eventKey", "deadlineAt"], foreignKeys = [ForeignKey(
+    entity = EventEntity::class, parentColumns = ["sourceKey"], childColumns = ["eventKey"], onDelete = ForeignKey.RESTRICT,
+)])
+data class DeadlineReceiptEntity(val eventKey: String, val deadlineAt: Long, val deliveredAt: Long)
+
 @Dao
 interface SchedulerDao {
+    @Query("SELECT * FROM deadline_settings WHERE id = 1") suspend fun deadlineSettings(): DeadlineSettingsEntity?
+    @Query("SELECT * FROM deadline_settings WHERE id = 1") fun observeDeadlineSettings(): Flow<DeadlineSettingsEntity?>
+    @Upsert suspend fun putDeadlineSettings(settings: DeadlineSettingsEntity)
+    @Query("SELECT * FROM deadline_receipts") suspend fun deadlineReceipts(): List<DeadlineReceiptEntity>
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun putDeadlineReceipt(receipt: DeadlineReceiptEntity): Long
+    @Transaction @Query("SELECT * FROM events") suspend fun allEvents(): List<EventDetails>
+    @Query("SELECT * FROM games") suspend fun games(): List<GameEntity>
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun ensureGame(game: GameEntity): Long
     @Query("SELECT * FROM games ORDER BY isUserCreated, name, profileKey") fun observeGames(): Flow<List<GameEntity>>
     @Query("UPDATE games SET name = :name, serverLabel = :server, serverUtcOffset = :offset WHERE profileKey = :profile")
@@ -188,8 +208,8 @@ interface SchedulerDao {
 
 @Database(entities = [GameEntity::class, EventEntity::class, CheckTemplateEntity::class,
     CheckRecordEntity::class, DailyTaskEntity::class, DailyTaskRecordEntity::class, SyncStateEntity::class,
-    PersonalTaskEntity::class, PersonalRecordEntity::class],
-    views = [CheckRow::class], version = 4, exportSchema = true)
+    PersonalTaskEntity::class, PersonalRecordEntity::class, DeadlineSettingsEntity::class, DeadlineReceiptEntity::class],
+    views = [CheckRow::class], version = 5, exportSchema = true)
 abstract class SchedulerDatabase : RoomDatabase() {
     abstract fun dao(): SchedulerDao
     companion object {
@@ -218,6 +238,18 @@ abstract class SchedulerDatabase : RoomDatabase() {
         val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE events ADD COLUMN isUserCreated INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""CREATE TABLE IF NOT EXISTS deadline_settings (
+                    id INTEGER NOT NULL, enabled INTEGER NOT NULL, playEnabled INTEGER NOT NULL,
+                    playLeadMinutes INTEGER NOT NULL, shopEnabled INTEGER NOT NULL, shopLeadMinutes INTEGER NOT NULL,
+                    PRIMARY KEY(id))""")
+                db.execSQL("""CREATE TABLE IF NOT EXISTS deadline_receipts (
+                    eventKey TEXT NOT NULL, deadlineAt INTEGER NOT NULL, deliveredAt INTEGER NOT NULL,
+                    PRIMARY KEY(eventKey, deadlineAt), FOREIGN KEY(eventKey) REFERENCES events(sourceKey)
+                    ON UPDATE NO ACTION ON DELETE RESTRICT)""")
             }
         }
     }

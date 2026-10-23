@@ -1,0 +1,20 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="#F4F6FA">
+    <LinearLayout android:id="@+id/settingsRoot" android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/back" android:text="돌아가기" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <TextView android:text="이벤트 마감 알림" android:textSize="24sp" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <CheckBox android:id="@+id/enabled" android:text="이벤트 마감 알림 사용" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <CheckBox android:id="@+id/playEnabled" android:text="참여 마감 알림 (임무·출석·도전·웹 이벤트)" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <EditText android:id="@+id/playMinutes" android:hint="참여 마감 몇 분 전? 예: 1440 = 하루 전" android:inputType="number" android:maxLength="5" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:text="참여 마감 전 알림 (분) · 60 = 1시간, 1440 = 하루" android:labelFor="@id/playMinutes" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <CheckBox android:id="@+id/shopEnabled" android:text="보상 교환 마감 알림" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <EditText android:id="@+id/shopMinutes" android:hint="교환 마감 몇 분 전? 예: 180 = 3시간 전" android:inputType="number" android:maxLength="5" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:text="보상 교환 마감 전 알림 (분)" android:labelFor="@id/shopMinutes" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:text="모든 게임에 공통 적용 · 각각 1~10,080분(7일)\n확인 필요·완료·기간 종료·숨긴 일정은 제외합니다.\n같은 일정·같은 마감은 한 번만 알립니다. 알림 기준 시각이 지난 일정을 등록하거나 알림을 켜면 마감 전에 한 번 알립니다.\nAndroid 절전 정책에 따라 발송이 지연될 수 있습니다." android:paddingTop="12dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <Button android:id="@+id/save" android:text="알림 설정 저장" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:id="@+id/status" android:accessibilityLiveRegion="polite" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:id="@+id/permissionStatus" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <Button android:id="@+id/permission" android:text="알림 권한 허용 요청" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <Button android:id="@+id/systemSettings" android:text="휴대폰의 알림 설정 열기" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:id="@+id/schedule" android:paddingTop="8dp" android:accessibilityLiveRegion="polite" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

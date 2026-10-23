@@ -23,6 +23,7 @@ class GameEventsFragment : Fragment(R.layout.fragment_game_events) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val b = FragmentGameEventsBinding.bind(view)
         val profile = arguments?.getString("profileKey") ?: PROFILE
+        var focusKey = arguments?.getString("focusEventKey")
         val app = requireActivity().application as SchedulerApp
         val pad = view.paddingLeft
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
@@ -52,9 +53,14 @@ class GameEventsFragment : Fragment(R.layout.fragment_game_events) {
                     b.heading.text = "${game?.name.orEmpty()} · 이벤트"
                     b.addEvent.isEnabled = game != null
                     b.empty.text = if (cards.isEmpty()) "이벤트를 등록해 참여와 보상 교환을 따로 관리해 보세요." else "참여·교환은 별도 체크 · 직접 등록한 일정만 수정 가능"
-                    adapter.submitList(cards)
+                    adapter.submitList(cards) {
+                        val position = cards.indexOfFirst { it.eventKey() == focusKey }
+                        if (position >= 0) { b.events.scrollToPosition(position); focusKey = null }
+                    }
                 }
             }
         }
     }
 }
+
+private fun EventCard.eventKey() = details.event.sourceKey

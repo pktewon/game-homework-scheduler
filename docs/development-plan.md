@@ -25,7 +25,7 @@
 
 - 저장소명: `game-homework-scheduler`
 - 실제 주소: https://github.com/pktewon/game-homework-scheduler
-- 공개 범위: 비공개. 제출 전 담당 교수의 접근 권한을 확인한다.
+- 공개 범위: 공개. 교수자가 로그인 없이 기획·설계 자료를 열람할 수 있다.
 - 중간고사: README, 기획서 PDF·Word, 화면 시안, 이동 흐름도, DB·처리 설계를 올린다.
 - 기말: Android 프로젝트 소스와 Gradle Wrapper를 추가하고, 실행 환경과 방법을 실제 구현에 맞춰 작성한다.
 - 기능 단위로 커밋한다. 예: `feat: add event editing`, `feat: save daily completion records`, `fix: preserve records after reset`.
@@ -44,7 +44,7 @@
 - [x] README와 업로드용 파일 정리
 - [x] 실제 GitHub 저장소 생성 및 파일 업로드
 - [x] 기획서 첫 페이지에 실제 저장소 주소 입력 후 PDF 재생성
-- [ ] 담당 교수의 비공개 저장소 접근 권한 확인
+- [x] 이름·학번 공개 승인에 따른 저장소 공개 전환
 - [ ] 수업 제출 시스템에 최종 PDF와 저장소 주소 제출
 
 ## 기말 기능 점검표

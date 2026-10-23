@@ -69,9 +69,13 @@ class EndfieldCollectorTests(unittest.TestCase):
                               '· 이벤트 콘텐츠 업데이트 시간: 2026/11/12 12:00(서버 시간)',
                               '· 「교환 테스트 상점」 개방 시간: 2026/11/05 12:00 ~ 2026/12/03 04:00(서버 시간)',
                               '· 이벤트 설명: 보상을 상점에서 교환할 수 있습니다.'))['groups'][0]['phases']
-        self.assertEqual([p['phaseKind'] for p in phases], ['CHALLENGE', 'STAGE', 'SHOP'])
+        self.assertEqual([p['phaseKind'] for p in phases], ['CHALLENGE', 'CONTENT_UPDATE', 'SHOP'])
         self.assertIsNone(phases[0]['endAt'])
-        self.assertEqual(phases[1]['startAt'], '2026-11-12T04:00:00Z')
+        self.assertEqual(phases[1]['occursAt'], '2026-11-12T04:00:00Z')
+        self.assertIsNone(phases[1]['startAt'])
+        self.assertIsNone(phases[1]['endAt'])
+        self.assertEqual(phases[1]['checkTemplates'], [])
+        self.assertEqual(phases[1]['timeState'], 'CONFIRMED')
         self.assertEqual(phases[2]['endAt'], '2026-12-02T20:00:00Z')
         self.assertEqual(phases[2]['timeState'], 'CONFIRMED')
 

@@ -11,7 +11,7 @@
 | 대상 플랫폼 | Android |
 | 저장소 | [pktewon/game-homework-scheduler](https://github.com/pktewon/game-homework-scheduler) |
 | 공개 범위 | 공개 — 로그인 없이 기획·설계 자료 열람 가능 |
-| 현재 단계 | 기획·설계 및 엔필 공지 수집기 구현, Android 앱 구현 예정 |
+| 현재 단계 | 기획·설계, 엔필 수집·검수·JSON 배포 구현, Android 앱 구현 예정 |
 | 관리 대상 예시 | 명조, 명일방주 엔드필드, 소녀전선 2 |
 
 ## 기획 의도와 문제인식
@@ -40,6 +40,8 @@
 - [JSON 형식 예시 — 실제 일정 아님](docs/examples/catalog.example.json)
 - [엔필 수집기 실행 방법과 실제 수집 범위](docs/endfield-collector.md)
 - [공식 공지에서 생성한 엔필 일정 JSON — 검수 후보](data/endfield-asia.candidate.json)
+- [엔필 검수 결과·배포 주소·Android 가져오기 계약](docs/endfield-release.md)
+- [앱용 JSON 매니페스트](https://raw.githubusercontent.com/pktewon/game-homework-scheduler/main/data/manifest.json)
 - [기말 개발 일정과 점검표](docs/development-plan.md)
 
 기획서 첫 페이지에 실제 저장소 주소를 반영했으며, 교수자가 로그인 없이 확인할 수 있도록 저장소를 공개했습니다.
@@ -51,11 +53,12 @@ Python 3.10 이상에서 추가 패키지 설치 없이 실행합니다.
 ```console
 python -m collector.endfield
 python -m unittest discover -s tests -v
+python -m collector.publish
 ```
 
-2026-10-23에 공식 「단청도」 공지를 직접 수집해 이벤트 묶음 11개, 세부 일정 15개, 일일 확인 숙제 4개를 생성했습니다. 양쪽 기간이 명시된 일정 7개와 확인이 필요한 일정 8개를 구분했습니다. 테스트 17개가 통과했습니다.
+2026-10-23에 공식 「단청도」 공지를 직접 수집·대조해 이벤트 묶음 11개, 기간 일정 12개, 콘텐츠 업데이트 시점 3개, 일일 확인 숙제 4개를 검수했습니다. 기간 중 6개는 양끝 확정, 6개는 확인 필요입니다. 콘텐츠 업데이트를 참여 기간으로 해석하던 부분을 수정했으며 테스트 27개가 통과했습니다.
 
-현재는 공지 URL 한 건의 ‘신규 이벤트’ 구간을 읽는 CLI입니다. 생성 JSON은 `CANDIDATE`, `autoImportAllowed=false`이며 실제 앱 배포 전 검수가 필요합니다. 원문 전체를 저장소에 복제하지 않고 출처·기간·추출 근거와 확인용 템플릿을 저장합니다. [실행 안내](docs/endfield-collector.md)에서 범위와 제한을 확인할 수 있습니다.
+공지 URL 한 건의 ‘신규 이벤트’ 구간을 읽는 CLI입니다. 수집 후보는 계속 `CANDIDATE`, `autoImportAllowed=false`이며 검수 기록·원문 재대조를 통과한 별도 [배포 JSON](https://raw.githubusercontent.com/pktewon/game-homework-scheduler/main/data/endfield-asia.json)은 `PUBLISHED`입니다. 불명확한 시각은 NULL·`NEEDS_REVIEW`로 유지합니다. 매니페스트에 버전별 주소·SHA-256·바이트 수를 제공하며 Android 수신·Room 병합은 이후 구현합니다. [검수 결과와 적용 계약](docs/endfield-release.md)에서 범위와 제한을 확인할 수 있습니다.
 
 ## 핵심 기능
 
@@ -124,7 +127,7 @@ python -m unittest discover -s tests -v
 
 일정은 자동으로 가져오고 완료는 직접 체크하는 방식으로 확정했습니다. 명조·엔필 Asia, 소전2 HAOPLAY 한국판의 프로필을 구분합니다. 검수된 일정 JSON 수신·Room 병합을 앱의 목표 기능으로 두고, 수집기는 엔필·명조·소전2 순으로 검증합니다. 소전2는 공개 카페 본문 확보가 불확실하면 검수 입력을 병행하며 앱은 같은 카탈로그를 자동으로 받습니다.
 
-엔드필드는 공식 한국어 공지를 직접 읽는 첫 수집기를 구현했습니다. 공지 목록 자동 탐색, 검수·운영 피드 배포, 세 게임의 실시간 자동 수집은 아직 구현하지 않았습니다. 종료 시각이 불명확하면 `기간 확인 필요`로 남기고, 실패 시 이전 JSON을 유지합니다.
+엔드필드는 공식 한국어 공지 수집과 검수 기록 기반 배포 JSON 생성을 구현했습니다. 공지 목록 자동 탐색, 예약 수집, 세 게임의 실시간 자동 수집은 아직 구현하지 않았습니다. 종료 시각이 불명확하면 `기간 확인 필요`로 남기고, 실패 시 이전 배포 매니페스트를 유지합니다.
 
 **일정 자동 가져오기와 개인 완료 자동 반영은 별개입니다.** 기말 버전은 공식 공지로 검수한 일정을 등록하고, 참여·보상 수령은 사용자가 체크합니다. 엔드필드는 공식 SKPORT에 일일·주간 진행 정보가 있지만, 우리 앱에서 쓸 수 있는 외부 연동 경로와 개별 이벤트 완료 필드는 따로 확인해야 합니다. 명조의 중국권 계정 도구나 소녀전선 2 글로벌 공지를 한국 이용 서버에 그대로 적용하지 않습니다. 세 게임의 차이와 입력 수고를 줄이는 방법은 [연동 검토 문서](docs/integration-decision.md)에 정리했습니다.
 
@@ -152,7 +155,7 @@ python -m unittest discover -s tests -v
 - [x] 실제 GitHub 저장소 생성·문서 업로드 및 기획서 주소 반영
 - [x] 이름·학번 공개 승인에 따라 저장소 공개 전환
 - [x] 세 게임의 이용 서버 확정 및 공지 수집·자동 등록 상세 설계
-- [x] 엔필 공식 공지 실제 수집, JSON 생성 및 테스트 17개 통과
+- [x] 엔필 공식 공지 실제 수집, 원문 대조·배포 JSON 생성 및 테스트 27개 통과
 - [ ] 수업 제출 시스템에 최종 PDF와 저장소 주소 제출
 - [ ] Android 앱 코드 구현과 실제 기기 검증
 - [ ] 최종 APK와 시연 자료 준비
@@ -171,6 +174,10 @@ game-homework-scheduler/
 ├── collector/                       # 엔필 공식 공지 수집기와 고정 키 등록부
 ├── tests/                           # 네트워크 없는 단위 테스트
 ├── data/endfield-asia.candidate.json # 실제 공지 추출, 검수 후보
+├── data/endfield-asia.json           # 검수한 앱용 피드
+├── data/manifest.json               # 버전별 URL·SHA-256·바이트 수
+├── data/releases/                   # 기존 파일을 덮어쓰지 않는 배포판
+├── reviews/                         # 원문 해시와 일정별 검수 기록
 └── docs/
     ├── planning/
     │   ├── Midterm_2026626007_김태준.pdf

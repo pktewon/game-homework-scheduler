@@ -260,20 +260,22 @@ def build_catalog(source, url, registry, checked_at, previous=None, accept_new=F
             start, end, reasons = parse_period(period_text, tz)
         else:
             start, end = start_override, parent_end
-            reasons = [] if end else ['END_NOT_EXPLICIT']
+            reasons = []
             if end and start >= end:
                 raise CollectorError('Additional stage opens at or after the event end.')
         group_key = ids[block['title']]
         phase = {
             'sourceKey': f'{PROFILE_KEY}:{group_key}:{key}', 'revision': 1,
-            'phaseKind': kind, 'title': block['title'] + {'play': '', 'stage': ' · 추가 개방', 'shop': ' · 교환 마감'}[key],
-            'startAt': start, 'endAt': end,
+            'phaseKind': kind, 'title': block['title'] + {'play': '', 'stage': ' · 콘텐츠 업데이트', 'shop': ' · 교환 마감'}[key],
+            'timeShape': 'INSTANT' if key == 'stage' else 'WINDOW',
+            'occursAt': start if key == 'stage' else None,
+            'startAt': None if key == 'stage' else start, 'endAt': None if key == 'stage' else end,
             'timeState': 'NEEDS_REVIEW' if reasons else 'CONFIRMED',
             'reviewReasons': reasons,
             'sourceUrl': url, 'sourceCheckedAt': checked_at,
             'sourceEvidence': {'section': '신규 이벤트', 'heading': block['title'], 'paragraph': period_index,
                                'periodText': period_text, 'timeZoneBasis': 'Asia / UTC' + offset},
-            'checkTemplates': ([{'sourceItemKey': 'wanted-exchanges', 'title': '원하는 교환 보상 수령 확인'}] if kind == 'SHOP' else [
+            'checkTemplates': ([] if key == 'stage' else [{'sourceItemKey': 'wanted-exchanges', 'title': '원하는 교환 보상 수령 확인'}] if kind == 'SHOP' else [
                 {'sourceItemKey': 'goal', 'title': '선택한 이벤트 목표 달성 확인'},
                 {'sourceItemKey': 'rewards', 'title': '이벤트 보상 수령 확인'},
             ]),
@@ -293,7 +295,7 @@ def build_catalog(source, url, registry, checked_at, previous=None, accept_new=F
                 phase['dailyTaskTemplates'].append(task)
         old = previous_phases.get(phase['sourceKey'])
         if old:
-            semantic = lambda p: {k: p[k] for k in ['phaseKind', 'title', 'startAt', 'endAt', 'timeState', 'reviewReasons', 'checkTemplates', 'dailyTaskTemplates']}
+            semantic = lambda p: {k: p.get(k) for k in ['phaseKind', 'title', 'timeShape', 'occursAt', 'startAt', 'endAt', 'timeState', 'reviewReasons', 'checkTemplates', 'dailyTaskTemplates']}
             phase['revision'] = old['revision'] + (semantic(old) != semantic(phase))
         return phase
 
@@ -310,7 +312,7 @@ def build_catalog(source, url, registry, checked_at, previous=None, accept_new=F
             when = parse_instant(update, tz)
             if not when:
                 raise CollectorError('Additional stage update has no explicit timestamp.')
-            phases.append(make_phase(block, 'stage', 'STAGE', i, update, start_override=when, parent_end=primary['endAt']))
+            phases.append(make_phase(block, 'stage', 'CONTENT_UPDATE', i, update, start_override=when, parent_end=primary['endAt']))
         shops = [(i, t) for i, t in block['lines'] if re.match(r'^[·•]\s*「[^」]+」\s*개방\s*(?:기간|시간)\s*:', t)]
         if len(shops) > 1:
             raise CollectorError('Multiple shop windows require an explicit identity mapping.')
@@ -331,7 +333,7 @@ def build_catalog(source, url, registry, checked_at, previous=None, accept_new=F
     phases = [p for g in groups for p in g['phases']]
     catalog = {
         'schemaVersion': 1, 'catalogRevision': revision, 'generatedAt': checked_at,
-        'collectorVersion': '0.1.0', 'catalogFingerprint': fingerprint,
+        'collectorVersion': '0.2.0', 'catalogFingerprint': fingerprint,
         'exampleOnly': False, 'publicationState': 'CANDIDATE', 'autoImportAllowed': False,
         'profile': {'profileKey': PROFILE_KEY, 'gameKey': 'endfield', 'publisherKey': 'GRYPHLINE',
                     'serverRegion': 'ASIA', 'locale': 'ko-KR', 'serverUtcOffset': offset},
@@ -339,8 +341,9 @@ def build_catalog(source, url, registry, checked_at, previous=None, accept_new=F
         'coverage': {'includedSection': '신규 이벤트', 'eventGroups': len(groups),
                      'notParsed': ['이벤트 및 콘텐츠 업데이트', '헤드헌팅 및 신청', '메일 및 상시 콘텐츠']},
         'summary': {'groups': len(groups), 'phases': len(phases),
-                    'confirmedPeriods': sum(p['timeState'] == 'CONFIRMED' for p in phases),
-                    'reviewPeriods': sum(p['timeState'] != 'CONFIRMED' for p in phases),
+                    'confirmedPeriods': sum(p['timeShape'] == 'WINDOW' and p['timeState'] == 'CONFIRMED' for p in phases),
+                    'reviewPeriods': sum(p['timeShape'] == 'WINDOW' and p['timeState'] != 'CONFIRMED' for p in phases),
+                    'confirmedInstants': sum(p['timeShape'] == 'INSTANT' for p in phases),
                     'dailyTasks': sum(len(p['dailyTaskTemplates']) for p in phases)},
         'warnings': ['신규 이벤트 구간만 지원하는 초기 수집기입니다. 다른 콘텐츠 구간은 별도 확인해야 합니다.',
                      '업데이트 후·점검 전의 시각은 추정하지 않습니다. 앱 배포 전 검수가 필요합니다.',

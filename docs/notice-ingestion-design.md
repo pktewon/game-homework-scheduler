@@ -128,7 +128,7 @@ flowchart TD
 | `checkTemplates` | 일회성 확인 항목과 고정 `sourceItemKey` |
 | `dailyTaskTemplates` | 반복 숙제와 고정 `sourceTaskKey`, 회차 기준 |
 
-정확한 JSON 모양은 [예제 카탈로그](examples/catalog.example.json)에 있다. 모든 이벤트명·날짜는 형식 설명용 가상 데이터이며 공식 일정이 아니다. 운영 피드 URL은 아직 배포하지 않았다.
+초기 JSON 예시는 [예제 카탈로그](examples/catalog.example.json)에 있다. 해당 예제의 이름·날짜는 가상 데이터다. 이후 구현한 엔필 실제 피드는 [검수 결과와 배포 계약](endfield-release.md)에 별도로 정리했다. 실제 공지의 콘텐츠 업데이트는 `STAGE` 기간 대신 `CONTENT_UPDATE / INSTANT`로 처리한다.
 
 ## 앱에서 자동 수신하고 등록하는 흐름
 

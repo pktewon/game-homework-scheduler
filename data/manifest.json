@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "profileKey": "endfield-gryphline-asia",
+      "releaseRevision": 1,
+      "schemaVersion": 1,
+      "releaseSchemaVersion": 1,
+      "url": "https://raw.githubusercontent.com/pktewon/game-homework-scheduler/main/data/releases/endfield-asia-v1.json",
+      "path": "releases/endfield-asia-v1.json",
+      "sha256": "e446b7172a70ff8b3a22068d0fc2da0b52197ef76b3840861ba4742f58e14f6b",
+      "bytes": 32376,
+      "publishedAt": "2026-10-23T09:33:11Z",
+      "sourceCheckedAt": "2026-10-23T09:29:47Z"
+    }
+  ]
+}

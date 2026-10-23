@@ -1,0 +1,27 @@
+# Android Studio and local configuration
+.idea/
+*.iml
+local.properties
+
+# Gradle and Kotlin generated files
+.gradle/
+.kotlin/
+**/build/
+.externalNativeBuild/
+.cxx/
+captures/
+
+# Local credentials and signing files
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+keystore.properties
+
+# Temporary documents and OS files
+~$*
+*.tmp
+.DS_Store
+Thumbs.db
+Desktop.ini

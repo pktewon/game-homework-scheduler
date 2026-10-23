@@ -71,6 +71,6 @@ API 35 임시 에뮬레이터에서 v0.7 데이터 위에 업데이트 설치하
 <img src="implementation/android-event-detail.png" alt="참여와 교환 일정 상세" width="360">
 <img src="implementation/android-event-detail-review.png" alt="기간을 임의 추정하지 않는 상세 화면" width="360">
 
-실제 게임 설치·물리 휴대폰·제조사별 글꼴/화면 크기 검증은 남아 있다. 명조·소전2 공식 수집과 배경 공지 갱신, 공식 일정의 개인 수정은 후속 범위다.
+2026-10-24 사용자가 실제 게임·휴대폰 기본 26개와 추가 4개 시험을 정상으로 확인했다. [체크리스트](phone-test-checklist.md)에 사용자 보고로 기록했으며 기종·시각·캡처는 미제공이다. 여러 제조사의 글꼴/화면 크기 검증, 명조·소전2 공식 수집과 배경 공지 갱신, 공식 일정 개인 수정·자유 체크 항목 편집은 후속 범위다.
 
 [README](../README.md) · [초기 화면 설계](screen-design.md) · [Android 실행](android-implementation.md)

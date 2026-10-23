@@ -158,6 +158,6 @@ DB 이름은 `game_scheduler_database`이다. 이 문서는 중간고사 시점�
 
 ## 자동 수신에 필요한 보완 설계
 
-이용 프로필·고정 키의 초기 보완안은 [공지 수집 상세 설계](notice-ingestion-design.md#room-저장-보완)에 있다. 현재 Android DB는 버전 3이며 초기화 미설정은 NULL이다. 1→2→3 경로로 기존 기록을 보존하고 개인 숙제 테이블은 공식 갱신에서 분리한다. 계획과의 차이는 [현재 구현](android-implementation.md)을 기준으로 확인한다.
+이용 프로필·고정 키의 초기 보완안은 [공지 수집 상세 설계](notice-ingestion-design.md#room-저장-보완)에 있다. 현재 Android DB는 버전 7의 12개 테이블이며 초기화 미설정은 NULL이다. 1→2→3→4→5→6→7 경로로 기존 기록을 보존하고 개인 숙제 테이블은 공식 갱신에서 분리한다. 계획과의 차이는 [현재 구현](android-implementation.md)을 기준으로 확인한다.
 
 [README로 돌아가기](../README.md)

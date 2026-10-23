@@ -29,8 +29,19 @@ Android **8.0 이상**에서 사용할 수 있는 테스트용 APK입니다. Git
 | 대상 플랫폼 | Android |
 | 저장소 | [pktewon/game-homework-scheduler](https://github.com/pktewon/game-homework-scheduler) |
 | 공개 범위 | 공개 — 로그인 없이 기획·설계 자료 열람 가능 |
-| 현재 단계 | 홈 대시보드·상태별 조회·이벤트 상세, 게임/숙제/이벤트 등록·수정, 실행 바로가기·메모·마감 알림 구현 |
+| 현재 단계 | 0.8.0 기말 제출 정리 완료 · 자동화 검사 및 휴대폰 사용자 확인 기록 제공 |
 | 관리 대상 예시 | 명조, 명일방주 엔드필드, 소녀전선 2 |
+
+## 최종 결과와 시연
+
+2026-10-24에 제출 범위를 정리했습니다. Android 테스트 105개 성공 결과·Lint 오류 0건·APK 빌드를 재확인하고, Python 수집·배포 테스트 27개를 실행해 통과했습니다. 휴대폰의 기본 26개·추가 4개 시험은 **사용자 확인 기준 통과**로 기록했습니다. 기종·시각·캡처 미제공 항목은 그대로 남겼습니다.
+
+- [최종 결과 보고서: 구현 범위·검증·제약](docs/final-report.md)
+- [3~5분 시연 대본과 준비 순서](docs/demo-guide.md)
+- [기말 제출 파일과 설치·실행 안내](docs/submission-guide.md)
+- [최종 제출 묶음 다운로드](https://github.com/pktewon/game-homework-scheduler/releases/download/v0.8.0/GameHomeworkScheduler-v0.8.0-submission.zip)
+
+명조·소전2 공식 수집기, 공지 목록 자동 탐색·예약 수집, 앱의 배경 공지 갱신, 공식 일정의 개인 수정과 자유 체크 항목 편집은 후속 확장으로 남겼습니다. 수업 제출 사이트 업로드와 본인 시연 녹화 여부는 작성자가 최종 확인합니다.
 
 ## 기획 의도와 문제인식
 
@@ -128,7 +139,7 @@ python -m collector.publish
 | --- | --- | --- |
 | ![종료 임박 이벤트가 먼저 보이는 홈 시안](docs/design/screens/01-home.png) | ![참여와 보상 수령을 체크하는 이벤트 상세 시안](docs/design/screens/02-event-detail.png) | ![일일 숙제와 이벤트를 확인하는 게임 상세 시안](docs/design/screens/05-game-detail.png) |
 
-화면은 홈, 이벤트 상세, 이벤트 등록·수정, 내 게임, 게임 상세, 개인 게시판, 메모 작성·수정의 7개 Fragment로 구성할 예정입니다. [전체 화면 시안과 UI 역할](docs/screen-design.md)을 별도 문서에 정리했습니다.
+초기 설계는 7개 화면 역할로 구성했습니다. 현재 앱은 홈·이벤트 상세·입력·게임 목록·숙제·메모와 보조 설정 화면을 구현했으며, 초기 게임 상세 역할은 여러 화면으로 나누었습니다. [초기 시안과 실제 Fragment 대응](docs/screen-design.md)을 별도 문서에 정리했습니다.
 
 ### 화면 이동
 
@@ -159,12 +170,12 @@ python -m collector.publish
 | 항목 | 적용 계획 |
 | --- | --- |
 | 언어와 도구 | Kotlin, Android Studio, Git, GitHub |
-| 화면과 이동 | XML Layout, Fragment, Navigation Component |
+| 화면과 이동 | XML Layout, Fragment, FragmentManager 백스택 |
 | 목록 표시 | RecyclerView |
-| 로컬 데이터 | Room, Entity, DAO, AppDatabase |
+| 로컬 데이터 | Room, Entity, DAO, SchedulerDatabase v7 · 12개 테이블 |
 | 상태 및 비동기 처리 | ViewModel, Repository, Coroutines, Flow |
 | 외부 앱 연결 | 설치된 모바일 게임 실행용 Intent |
-| 확장 기능 | JSON 일정 수신과 WorkManager 기반 배경 갱신 |
+| 일정 수신과 확장 | 검수 JSON 수신·병합 구현. WorkManager 기반 배경 갱신은 후속 범위 |
 
 ![Fragment에서 Room까지 데이터가 저장되고 표시되는 흐름](docs/design/data-flow.png)
 
@@ -211,8 +222,9 @@ python -m collector.publish
 - [x] 참여·교환 마감 알림, 분 단위 시점 설정, 권한·제외·중복 방지
 - [x] 게임별 개인 메모 등록·수정, 이벤트 연결·해제와 재실행 보존
 - [x] 게임별 설치 앱 연결·실행, 미설치 안내 및 완료 체크 분리
-- [ ] 홈·상세 화면 보완 및 실제 게임·휴대폰 검증
-- [ ] 최종 APK와 시연 자료 준비
+- [x] 홈·상세 화면 보완 및 실제 게임·휴대폰 기본/추가 30개 시험 사용자 확인 기록
+- [x] 검증된 0.8.0 APK·최종 결과 보고서·시연 대본·제출 안내 준비
+- [ ] 수업에서 요구하는 시연 녹화·발표 및 학교 제출 완료 확인
 
 ## 현재 확인 방법
 

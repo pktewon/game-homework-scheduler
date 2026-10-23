@@ -1,6 +1,6 @@
 # Android 구현: 일정 수신·Room 저장·회차별 완료 기록
 
-2026-10-23 기준 엔필 Asia 수신과 일일 숙제 체크, 게임/개인 숙제·이벤트 등록·수정, 개인 메모·마감 알림과 설치 게임 실행 바로가기를 구현했다. 앱 0.8.0의 홈 요약·상태 필터·이벤트 상세를 포함한 현재 동작을 정리한다. 일부 보조 화면은 초기 시안과 배치가 다르다.
+2026-10-24 기준 엔필 Asia 수신과 일일 숙제 체크, 게임/개인 숙제·이벤트 등록·수정, 개인 메모·마감 알림과 설치 게임 실행 바로가기를 구현했다. 앱 0.8.0의 홈 요약·상태 필터·이벤트 상세를 포함한 현재 동작을 정리한다. 일부 보조 화면은 초기 시안과 배치가 다르다.
 
 ## Android Studio에서 열기
 
@@ -88,7 +88,7 @@ macOS/Linux는 `./gradlew`를 사용한다. 디버그 APK는 `app/build/outputs/
 
 참여/교환 기간과 완료 보존은 [이벤트 직접 등록·수정](manual-events.md)에 정리했다.
 
-일일 회차는 [회차 규칙](daily-tasks.md), 다중 게임·개인 숙제는 [등록·수정 안내](manual-registration.md)에 정리했다. 남은 범위는 공식 기간 수동 편집·실제 게임/휴대폰 검증·배경 공지 갱신·명조/소전2 공식 수집기다. 게임/숙제/이벤트 수동 등록은 여러 게임을 지원하고 공식 수신은 엔필 Asia를 지원한다.
+일일 회차는 [회차 규칙](daily-tasks.md), 다중 게임·개인 숙제는 [등록·수정 안내](manual-registration.md)에 정리했다. 실제 게임·휴대폰은 사용자가 기본 26개·추가 4개 시험을 정상으로 확인했다. 기종·시각·개별 캡처는 미제공이며 [체크리스트](phone-test-checklist.md)에 사용자 보고로 기록한다. 후속 범위는 공식 기간 수동 편집·자유 체크 항목 편집·배경 공지 갱신·명조/소전2 공식 수집기와 다기종 검증이다. 게임/숙제/이벤트 수동 등록은 여러 게임을 지원하고 공식 수신은 엔필 Asia를 지원한다.
 
 참고: [Room 비동기 쿼리](https://developer.android.com/training/data-storage/room/async-queries), [Room 버전·컴파일러 설정](https://developer.android.com/jetpack/androidx/releases/room), [AGP 8.9 호환성](https://developer.android.com/build/releases/agp-8-9-0-release-notes).
 

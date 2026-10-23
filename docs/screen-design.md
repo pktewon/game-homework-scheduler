@@ -6,7 +6,21 @@
 
 현재 앱 0.8.0은 홈의 종료 임박·오늘의 숙제 요약·상태 필터와 이벤트 상세를 구현했다. [실제 홈·상세 화면과 상태 판정](home-and-detail.md)이 현재 구현의 기준이다. 게임별 개인 게시판과 메모 등록·수정 화면도 구현했다. 실제 이동과 스크린샷은 [개인 메모 안내](personal-memos.md)를 참고한다. 아래 7개 화면은 초기 시안이며 현재 화면 배치와 다른 부분이 있다.
 
-## 화면 목록
+## 실제 구현과 초기 설계의 대응
+
+| 초기 역할 | 현재 구현 |
+| --- | --- |
+| 홈 | HomeFragment |
+| 이벤트 상세 | EventDetailFragment |
+| 이벤트 입력 | EventEditorFragment |
+| 내 게임·게임 입력 | GamesFragment와 게임 입력 대화상자 |
+| 게임 상세 | DailyFragment·GameEventsFragment·GameAppFragment로 분리 |
+| 개인 게시판 | MemoBoardFragment |
+| 메모 입력 | MemoEditorFragment |
+
+마감 알림 설정은 DeadlineSettingsFragment로 분리했다. 화면 전환은 FragmentManager 백스택으로 처리한다. 아래 표와 이미지는 초기 설계의 역할·시안이며 현재 배치와 클래스명은 위 표가 기준이다.
+
+## 초기 화면 목록
 
 | 번호 | 화면 | Fragment | 주요 역할 |
 | --- | --- | --- | --- |

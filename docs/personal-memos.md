@@ -54,7 +54,7 @@
 조회: memos LEFT JOIN events → 최신 연결 이름·보관/확인 필요 상태 표시
 ```
 
-현재 0.7은 실행 앱 연결 컬럼을 추가한 [Room 스키마 7](game-shortcuts.md)을 사용한다. 아래 메모 기능 검증에 더해 기존 업그레이드 경로도 v7까지 실행한다.
+현재 0.8.0은 실행 앱 연결 컬럼을 유지한 [Room 스키마 7](game-shortcuts.md)을 사용한다. 아래 메모 기능 검증에 더해 기존 업그레이드 경로도 v7까지 실행한다.
 
 ## 검증
 
@@ -67,7 +67,7 @@ Android 테스트 **78개**가 통과했다. 기존 66개와 메모 테스트 12
 - 공식 일정 제거·재등장, 파일 DB 재실행, FK 삭제 제한과 수정순 정렬
 - 실제 v5 스키마의 v6 업그레이드 후 체크·설정·알림 발송 이력 보존, 기존 v1~v4 업그레이드 경로
 
-실제 UI 검증은 API 35 에뮬레이터에서 수행했다. 기존 앱 업데이트, 이벤트 연결 메모와 게임 메모 작성·수정, 화면 회전, 연결 이벤트 이동, 연결 선택/해제, 취소, 공식 새로고침·프로세스 재실행 후 보존과 게임별 분리를 확인했다. 실제 휴대폰 검증은 남아 있다.
+실제 UI 검증은 API 35 에뮬레이터에서 수행했다. 기존 앱 업데이트, 이벤트 연결 메모와 게임 메모 작성·수정, 화면 회전, 연결 이벤트 이동, 연결 선택/해제, 취소, 공식 새로고침·프로세스 재실행 후 보존과 게임별 분리를 확인했다. 2026-10-24 사용자의 기본 시험 완료 보고에 메모·재실행 보존 확인을 포함했으며 [체크리스트](phone-test-checklist.md)에 사용자 확인으로 기록했다.
 
 관련 코드: [메모 저장·검증](../android/app/src/main/java/kr/ac/jeiu/gamescheduler/data/MemoRepository.kt), [게시판](../android/app/src/main/java/kr/ac/jeiu/gamescheduler/MemoBoardFragment.kt), [입력 상태](../android/app/src/main/java/kr/ac/jeiu/gamescheduler/MemoEditorViewModel.kt), [Room v6](../android/app/schemas/kr.ac.jeiu.gamescheduler.data.SchedulerDatabase/6.json), [메모 테스트](../android/app/src/test/java/kr/ac/jeiu/gamescheduler/MemoTest.kt).
 

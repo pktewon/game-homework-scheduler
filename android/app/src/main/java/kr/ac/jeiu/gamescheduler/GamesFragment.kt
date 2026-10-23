@@ -38,6 +38,8 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
         }, onEdit = ::editGame, onEvents = { game ->
             val events = GameEventsFragment().apply { arguments = Bundle().apply { putString("profileKey", game.profileKey) } }
             parentFragmentManager.beginTransaction().replace(R.id.container, events).addToBackStack("game-events").commit()
+        }, onMemos = { game ->
+            parentFragmentManager.beginTransaction().replace(R.id.container, MemoBoardFragment.create(game.profileKey)).addToBackStack("game-memos").commit()
         })
         binding.games.layoutManager = LinearLayoutManager(requireContext())
         binding.games.adapter = adapter
@@ -95,7 +97,7 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
 }
 
 private class GamesAdapter(private val onOpen: (GameEntity) -> Unit, private val onEdit: (GameEntity) -> Unit,
-                           private val onEvents: (GameEntity) -> Unit) :
+                           private val onEvents: (GameEntity) -> Unit, private val onMemos: (GameEntity) -> Unit) :
     ListAdapter<GameEntity, GamesAdapter.Holder>(object : DiffUtil.ItemCallback<GameEntity>() {
         override fun areItemsTheSame(a: GameEntity, b: GameEntity) = a.profileKey == b.profileKey
         override fun areContentsTheSame(a: GameEntity, b: GameEntity) = a == b
@@ -111,6 +113,7 @@ private class GamesAdapter(private val onOpen: (GameEntity) -> Unit, private val
             openDaily.setOnClickListener { onOpen(game) }
             editGame.setOnClickListener { onEdit(game) }
             openEvents.setOnClickListener { onEvents(game) }
+            openMemos.setOnClickListener { onMemos(game) }
         }
     }
 }

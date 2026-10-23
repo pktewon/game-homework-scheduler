@@ -40,7 +40,10 @@ class GameEventsFragment : Fragment(R.layout.fragment_game_events) {
                 catch (cancelled: CancellationException) { throw cancelled }
                 catch (_: Exception) { b.status.text = "완료 기록을 저장하지 못했습니다. 다시 시도해 주세요." }
             }
-        }, onSource = { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it))) }, onEdit = { edit(it.groupKey) })
+        }, onSource = { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it))) }, onEdit = { edit(it.groupKey) }, onMemos = { event ->
+            parentFragmentManager.beginTransaction().replace(R.id.container, MemoBoardFragment.create(profile, event.sourceKey))
+                .addToBackStack("event-memos").commit()
+        })
         b.events.layoutManager = LinearLayoutManager(requireContext()); b.events.adapter = adapter
         b.back.setOnClickListener { parentFragmentManager.popBackStack() }
         b.addEvent.setOnClickListener { edit() }

@@ -30,6 +30,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }, onEdit = { event ->
             parentFragmentManager.beginTransaction().replace(R.id.container,
                 EventEditorFragment.create(event.profileKey, event.groupKey)).addToBackStack("edit-event").commit()
+        }, onMemos = { event ->
+            parentFragmentManager.beginTransaction().replace(R.id.container, MemoBoardFragment.create(event.profileKey, event.sourceKey))
+                .addToBackStack("event-memos").commit()
         })
         binding.events.layoutManager = LinearLayoutManager(requireContext())
         binding.events.adapter = adapter

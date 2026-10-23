@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#F4F6FA" android:padding="16dp" android:layout_width="match_parent" android:layout_height="match_parent">
+    <Button android:id="@+id/back" android:text="돌아가기" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/heading" android:textSize="24sp" android:textStyle="bold" android:textColor="#18243B" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/info" android:paddingTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <Button android:id="@+id/addMemo" android:text="메모 등록" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <Button android:id="@+id/allMemos" android:text="이 게임의 전체 메모 보기" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/empty" android:text="아직 메모가 없습니다. 공략이나 챙길 보상을 적어 보세요." android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/memos" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+</LinearLayout>

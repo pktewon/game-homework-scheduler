@@ -225,9 +225,9 @@ class DeadlineTest {
             legacy.execSQL("INSERT INTO check_records VALUES (?, ?, ?, ?)", arrayOf<Any>("user-event:old:play", "goal", 1, clock.now))
             legacy.version = 4
         }
-        val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name).addMigrations(SchedulerDatabase.MIGRATION_4_5).build()
+        val migrated = Room.databaseBuilder(context, SchedulerDatabase::class.java, name).addMigrations(SchedulerDatabase.MIGRATION_4_5, SchedulerDatabase.MIGRATION_5_6).build()
         try {
-            assertEquals(5, migrated.openHelper.readableDatabase.version)
+            assertEquals(6, migrated.openHelper.readableDatabase.version)
             assertTrue(migrated.dao().event("user-event:old:play")!!.isUserCreated)
             assertTrue(migrated.dao().checkRecord("user-event:old:play", "goal")!!.isDone)
             assertEquals(240, migrated.dao().game(PROFILE)!!.dailyResetMinute)

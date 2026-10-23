@@ -1,0 +1,10 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="14dp" android:background="#FFFFFF" android:layout_marginBottom="10dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:id="@+id/title" android:textSize="20sp" android:textStyle="bold" android:textColor="#18243B" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/body" android:textSize="16sp" android:maxLines="6" android:ellipsize="end" android:paddingTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/event" android:paddingTop="8dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/modified" android:paddingTop="4dp" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/editMemo" android:text="메모 보기 · 수정" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+        <Button android:id="@+id/openEvent" android:text="연결 이벤트 보기" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

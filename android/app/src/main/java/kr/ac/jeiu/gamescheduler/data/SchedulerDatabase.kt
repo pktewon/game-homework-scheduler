@@ -135,8 +135,24 @@ data class DeadlineSettingsEntity(
 )])
 data class DeadlineReceiptEntity(val eventKey: String, val deadlineAt: Long, val deliveredAt: Long)
 
+@Entity(tableName = "memos", foreignKeys = [
+    ForeignKey(entity = GameEntity::class, parentColumns = ["profileKey"], childColumns = ["profileKey"], onDelete = ForeignKey.RESTRICT),
+    ForeignKey(entity = EventEntity::class, parentColumns = ["sourceKey"], childColumns = ["eventKey"], onDelete = ForeignKey.RESTRICT),
+], indices = [Index("profileKey"), Index("eventKey")])
+data class MemoEntity(
+    @PrimaryKey val memoId: String, val profileKey: String, val eventKey: String?,
+    val title: String, val body: String, val createdAt: Long, val updatedAt: Long,
+)
+data class MemoRow(@Embedded val memo: MemoEntity, val eventTitle: String?, val eventMissing: Boolean?, val eventTimeState: String?)
+
 @Dao
 interface SchedulerDao {
+    @Query("SELECT * FROM memos WHERE memoId = :id") suspend fun memo(id: String): MemoEntity?
+    @Upsert suspend fun putMemo(memo: MemoEntity)
+    @Query("""SELECT m.*, e.title AS eventTitle, e.missingFromLatest AS eventMissing, e.timeState AS eventTimeState
+        FROM memos m LEFT JOIN events e ON m.eventKey = e.sourceKey
+        WHERE m.profileKey = :profile ORDER BY m.updatedAt DESC, m.createdAt DESC, m.memoId""")
+    fun observeMemos(profile: String): Flow<List<MemoRow>>
     @Query("SELECT * FROM deadline_settings WHERE id = 1") suspend fun deadlineSettings(): DeadlineSettingsEntity?
     @Query("SELECT * FROM deadline_settings WHERE id = 1") fun observeDeadlineSettings(): Flow<DeadlineSettingsEntity?>
     @Upsert suspend fun putDeadlineSettings(settings: DeadlineSettingsEntity)
@@ -208,8 +224,8 @@ interface SchedulerDao {
 
 @Database(entities = [GameEntity::class, EventEntity::class, CheckTemplateEntity::class,
     CheckRecordEntity::class, DailyTaskEntity::class, DailyTaskRecordEntity::class, SyncStateEntity::class,
-    PersonalTaskEntity::class, PersonalRecordEntity::class, DeadlineSettingsEntity::class, DeadlineReceiptEntity::class],
-    views = [CheckRow::class], version = 5, exportSchema = true)
+    PersonalTaskEntity::class, PersonalRecordEntity::class, DeadlineSettingsEntity::class, DeadlineReceiptEntity::class, MemoEntity::class],
+    views = [CheckRow::class], version = 6, exportSchema = true)
 abstract class SchedulerDatabase : RoomDatabase() {
     abstract fun dao(): SchedulerDao
     companion object {
@@ -250,6 +266,17 @@ abstract class SchedulerDatabase : RoomDatabase() {
                     eventKey TEXT NOT NULL, deadlineAt INTEGER NOT NULL, deliveredAt INTEGER NOT NULL,
                     PRIMARY KEY(eventKey, deadlineAt), FOREIGN KEY(eventKey) REFERENCES events(sourceKey)
                     ON UPDATE NO ACTION ON DELETE RESTRICT)""")
+            }
+        }
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""CREATE TABLE IF NOT EXISTS memos (
+                    memoId TEXT NOT NULL, profileKey TEXT NOT NULL, eventKey TEXT,
+                    title TEXT NOT NULL, body TEXT NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL,
+                    PRIMARY KEY(memoId), FOREIGN KEY(profileKey) REFERENCES games(profileKey) ON UPDATE NO ACTION ON DELETE RESTRICT,
+                    FOREIGN KEY(eventKey) REFERENCES events(sourceKey) ON UPDATE NO ACTION ON DELETE RESTRICT)""")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_memos_profileKey ON memos(profileKey)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_memos_eventKey ON memos(eventKey)")
             }
         }
     }

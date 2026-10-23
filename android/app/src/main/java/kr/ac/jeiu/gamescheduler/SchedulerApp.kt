@@ -14,7 +14,7 @@ class SchedulerApp : Application() {
     val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val database by lazy {
         Room.databaseBuilder(this, SchedulerDatabase::class.java, "game_scheduler_database")
-            .addMigrations(SchedulerDatabase.MIGRATION_1_2, SchedulerDatabase.MIGRATION_2_3, SchedulerDatabase.MIGRATION_3_4, SchedulerDatabase.MIGRATION_4_5).build()
+            .addMigrations(SchedulerDatabase.MIGRATION_1_2, SchedulerDatabase.MIGRATION_2_3, SchedulerDatabase.MIGRATION_3_4, SchedulerDatabase.MIGRATION_4_5, SchedulerDatabase.MIGRATION_5_6).build()
     }
     val repository by lazy { CatalogRepository(database) }
     val dailyRepository by lazy { DailyRepository(database) }

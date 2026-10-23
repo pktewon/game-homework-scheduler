@@ -41,7 +41,8 @@ data class EventCard(val details: EventDetails, val now: Long, val gameName: Str
 }
 
 class EventAdapter(private val onCheck: (String, String, Boolean) -> Unit, private val onSource: (String) -> Unit,
-                   private val onEdit: (kr.ac.jeiu.gamescheduler.data.EventEntity) -> Unit = {}) :
+                   private val onEdit: (kr.ac.jeiu.gamescheduler.data.EventEntity) -> Unit = {},
+                   private val onMemos: (kr.ac.jeiu.gamescheduler.data.EventEntity) -> Unit = {}) :
     ListAdapter<EventCard, EventAdapter.Holder>(object : DiffUtil.ItemCallback<EventCard>() {
         override fun areItemsTheSame(a: EventCard, b: EventCard) = a.details.event.sourceKey == b.details.event.sourceKey
         override fun areContentsTheSame(a: EventCard, b: EventCard) = a == b
@@ -80,6 +81,7 @@ class EventAdapter(private val onCheck: (String, String, Boolean) -> Unit, priva
             source.isVisible = event.sourceUrl.isNotBlank()
             editEvent.isVisible = event.isUserCreated
             editEvent.setOnClickListener { onEdit(event) }
+            eventMemos.setOnClickListener { onMemos(event) }
         }
     }
 }
